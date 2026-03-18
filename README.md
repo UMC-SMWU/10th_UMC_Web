@@ -40,6 +40,7 @@
     
 - PR(Pull Request)시 메세지 제목은 다음과 같이 `[이름/닉네임] ㅇ주차 정리내용 제출.` 라고 적은 후 `create pull request` 버튼을 눌러주세요
 - PR : `base: [master]` <- `compare: [본인 github 아이디]`
+- PR 템플렛은 자동으로 뜨도록 설정해놨습니다! 
 
 ❤️ 본인의 폴더안에 있는 [README.md](http://README.md) 파일은 자유롭게 사용해주세요🙂
 
