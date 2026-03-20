@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aido Navbar</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="Navbar.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="navbar__left">
+            <div class="navbar__logo-box">😺</div>
+            <div class="navbar__logo-text">Aido</div>
+        </div>
+
+        <div class="navbar__center">
+            <a href="#" class="navbar__link" id="menu1">고양이 친구들</a>
+            <a href="#" class="navbar__link" id="menu2">패치 노트</a>
+            <a href="#" class="navbar__link navbar__link--active" id="menu3">앱 다운로드</a>
+        </div>
+
+        <div class="navbar__right">
+            <div class="navbar__lang-toggle">
+                <span class="navbar__lang-label" id="langLabel">언어</span>
+                <span class="navbar__lang-btn navbar__lang-btn--active" id="koBtn">KO</span>
+                <span class="navbar__lang-btn" id="enBtn">EN</span>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+    const koBtn = document.getElementById("koBtn");
+    const enBtn = document.getElementById("enBtn");
+
+    const langLabel = document.getElementById("langLabel");
+    const menu1 = document.getElementById("menu1");
+    const menu2 = document.getElementById("menu2");
+    const menu3 = document.getElementById("menu3");
+
+    koBtn.addEventListener("click", function () {
+      koBtn.classList.add("navbar__lang-btn--active");
+      enBtn.classList.remove("navbar__lang-btn--active");
+
+      langLabel.textContent = "언어";
+      menu1.textContent = "고양이 친구들";
+      menu2.textContent = "패치 노트";
+      menu3.textContent = "앱 다운로드";
+    });
+
+    enBtn.addEventListener("click", function () {
+      enBtn.classList.add("navbar__lang-btn--active");
+      koBtn.classList.remove("navbar__lang-btn--active");
+
+      langLabel.textContent = "LANGUAGE";
+      menu1.textContent = "Cat Friends";
+      menu2.textContent = "Patch Notes";
+      menu3.textContent = "Download App";
+    });
+  </script>
+
+</body>
+</html>
