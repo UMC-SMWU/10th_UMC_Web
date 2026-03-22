@@ -92,3 +92,29 @@ console.log(object1);
 // const object2: object = "bomi"; // error
 // console.log(object2);
 
+
+
+// 타입 스크립트에만 존재하는 타입
+
+// any 타입 예시
+let value1: any=10;
+value1 = "hello";
+value1 = true;
+
+// unknown 타입 예시
+let value2: unknown = "hello";
+// console.log(value2.toUpperCase()); // error
+
+if (typeof value2 === "string") { // 타입 좁히기
+  console.log(value2.toUpperCase());
+}
+
+// void 타입 예시
+function logMessage(): void {
+  console.log("hello");
+}
+
+// never 타입 예시
+function fun1(): never {
+    while (true) {} // 무한 루프
+}
