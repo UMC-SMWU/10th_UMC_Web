@@ -14,16 +14,16 @@ type Todo={
 let todos: Todo[]=[];
 let doneTasks: Todo[]=[];
 
-const renderTasks=():void => {
+const renderTasks=() => {
     todoList.innerHTML='';
     doneList.innerHTML='';
 
-    todos.forEach((todo): void => {
+    todos.forEach((todo) => {
         const li=createTodoElement(todo,false);
         todoList.appendChild(li);
     });
 
-    doneTasks.forEach((todo): void => {
+    doneTasks.forEach((todo) => {
         const li=createTodoElement(todo,true);
         doneList.appendChild(li);
     });
@@ -36,21 +36,21 @@ const getTodoText=():string => {
 
 
 // 4. 할 일 추가 처리 함수
-const addTodo=(text:string):void => {
+const addTodo=(text:string) => {
     todos.push({id:Date.now(), text});
     todoInput.value='';
     renderTasks();
 };
 
 // 5. 할 일 상태 변경
-const completeTodo=(todo:Todo):void => {
+const completeTodo=(todo:Todo) => {
     todos=todos.filter((t):boolean => t.id!==todo.id); // 내가 선택한 것이 아닌 것들만 필터링
     doneTasks.push(todo);
     renderTasks();
 };
 
 // 6. 완료된 할 일 삭제 함수
-const deleteTodo=(todo:Todo):void => {
+const deleteTodo=(todo:Todo) => {
     doneTasks=doneTasks.filter((t):boolean=>t.id!==todo.id);
     renderTasks();
 };
@@ -86,7 +86,7 @@ const createTodoElement=(todo:Todo,isDone:boolean):HTMLElement=> {
 };
 
 //8. 폼 제출 이벤트 리스너
-todoForm.addEventListener('submit', (event:Event):void => {
+todoForm.addEventListener('submit', (event:Event) => {
     event.preventDefault();
     const text=getTodoText();
     if (text) {
