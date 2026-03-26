@@ -1,0 +1,55 @@
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* 1. 숙명여자대학교: 글자 크기만큼 배경, 잘리지 않게 처리 */
+.school {
+  background-color: blue;
+  color: white;
+  display: inline-block; /* 💡 배경이 글자만큼만 생기도록 */
+  font-size: 6rem; /* 💡 글자 크기 (매우 크게) */
+  font-weight: bold;
+  padding: 20px 40px; /* 💡 상하좌우 여백을 주어 글자 보호 */
+  line-height: 1.2; /* 💡 위아래가 잘리지 않도록 높이 조절 */
+  margin-bottom: 20px;
+}
+
+/* 2. 피노/윤서빈: 보라색 및 문장 간격 띄우기 */
+.user-nickname {
+  color: purple;
+  font-weight: bold;
+  font-size: 3rem;
+  margin: 100px 0 40px 40px; /* 💡 위쪽 100px, 아래쪽 40px로 간격 대폭 확대 */
+}
+
+/* 3. 메인 문장 간격 */
+.main-sentence {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin: 0 0 80px 40px; /* 💡 아래 리스트와 80px 간격 */
+}
+
+/* 4. 리스트: 왼쪽 정렬 및 글자 크기 축소 */
+.stack-list {
+  padding-left: 80px; /* 점(bullet) 위치 확보 */
+  margin: 0;
+  list-style-type: disc;
+}
+
+.stack-list li {
+  font-size: 1.1rem; /* 💡 항목 글자 크기 줄임 */
+  font-weight: bold;
+  margin-bottom: 15px; /* 항목 간 간격 */
+  text-align: left;
+}
