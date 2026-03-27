@@ -1,55 +1,50 @@
+/* 전체 화면 초기화 및 왼쪽 정렬 */
 #root {
   width: 100%;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
   align-items: flex-start;
   background-color: white;
 }
 
+/* 텍스트와 버튼을 감싸는 박스 */
 .container {
+  padding: 50px; /* 왼쪽과 위쪽 여백 */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
 }
 
-/* 1. 숙명여자대학교: 글자 크기만큼 배경, 잘리지 않게 처리 */
-.school {
-  background-color: blue;
-  color: white;
-  display: inline-block; /* 💡 배경이 글자만큼만 생기도록 */
-  font-size: 6rem; /* 💡 글자 크기 (매우 크게) */
+/* 1번 사진 특유의 아주 크고 굵은 텍스트 */
+.container p {
+  font-size: 80px; /* 1번 사진처럼 거대한 크기 */
+  font-weight: 900; /* 가장 굵은 두께 */
+  color: black; /* 선명한 검정색 */
+  margin: 10px 0; /* 줄 사이 간격 최소화 */
+  letter-spacing: -3px; /* 글자 사이를 살짝 붙여서 더 묵직하게 */
+}
+
+/* 버튼들을 가로로 배치 */
+.button-group {
+  display: flex;
+  gap: 10px; /* 버튼 사이 간격 */
+  margin-top: 30px; /* 텍스트와 버튼 사이 거리 */
+}
+
+/* 1번 사진의 시스템 기본 버튼 같은 스타일 */
+.button-group button {
+  padding: 8px 16px; /* 버튼 안쪽 여백 */
+  font-size: 28px; /* 버튼 글자 크기 */
   font-weight: bold;
-  padding: 20px 40px; /* 💡 상하좌우 여백을 주어 글자 보호 */
-  line-height: 1.2; /* 💡 위아래가 잘리지 않도록 높이 조절 */
-  margin-bottom: 20px;
+  background-color: #f0f0f0; /* 연한 회색 */
+  border: 2px solid #767676; /* 진한 회색 테두리 */
+  border-radius: 4px; /* 아주 살짝 둥근 모서리 */
+  cursor: pointer;
+  color: black;
 }
 
-/* 2. 피노/윤서빈: 보라색 및 문장 간격 띄우기 */
-.user-nickname {
-  color: purple;
-  font-weight: bold;
-  font-size: 3rem;
-  margin: 100px 0 40px 40px; /* 💡 위쪽 100px, 아래쪽 40px로 간격 대폭 확대 */
-}
-
-/* 3. 메인 문장 간격 */
-.main-sentence {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin: 0 0 80px 40px; /* 💡 아래 리스트와 80px 간격 */
-}
-
-/* 4. 리스트: 왼쪽 정렬 및 글자 크기 축소 */
-.stack-list {
-  padding-left: 80px; /* 점(bullet) 위치 확보 */
-  margin: 0;
-  list-style-type: disc;
-}
-
-.stack-list li {
-  font-size: 1.1rem; /* 💡 항목 글자 크기 줄임 */
-  font-weight: bold;
-  margin-bottom: 15px; /* 항목 간 간격 */
-  text-align: left;
+/* 버튼 클릭 시 효과 */
+.button-group button:active {
+  background-color: #dcdcdc;
 }
