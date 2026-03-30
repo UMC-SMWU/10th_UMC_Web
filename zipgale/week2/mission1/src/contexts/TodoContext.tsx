@@ -1,0 +1,47 @@
+import type { TTodo } from '../types/todo'
+import { Children, type PropsWithChildren, createContext } from 'react';
+import { useState, useContext } from 'react';
+
+interface ITodoContext {
+  todos: TTodo[];
+  doneTodos: TTodo[];
+  addTodo: (text: string) => void;
+  completeTodo: (todo: TTodo) => void;
+  deleteTodo: (todo: TTodo) => void;
+}
+
+export const TodoContext = createContext<ITodoContext | undefined>(undefined);
+
+export const TodoProvider=({children}: PropsWithChildren) => {
+    const [todos, setTodos] = useState<TTodo []>([]);
+    const [doneTodos, setDoneTodos] = useState<TTodo []>([]);
+    
+    const addTodo = (text: string) =>{
+      const newTodo: TTodo = { id: Date.now(), text};
+      setTodos((prevTodos): TTodo[] => [...prevTodos, newTodo])
+    };
+
+     const completeTodo = (todo: TTodo) => {
+      setTodos(prevTodos => prevTodos.filter((t) => t.id !== todo.id))
+      setDoneTodos(prevDoneTodos => [...prevDoneTodos, todo]);
+    };
+  
+    const deleteTodo = (todo: TTodo) => {
+      setDoneTodos(prevDoneTodo => prevDoneTodo.filter((t) => t.id !== todo.id));
+    };
+    
+    return(
+      <TodoContext.Provider value={{todos, doneTodos, addTodo, completeTodo, deleteTodo}}>
+        {children}
+      </TodoContext.Provider>
+    )
+}
+
+export const useTodo = () => {
+  const context = useContext(TodoContext);
+  if(!context){ // context가 없는 경우
+    throw new Error('useTodo를 사용하기 위해서는 무ㅅ조건 TodoPRovider로 감ㅅ싸야 합니다.');
+  };
+
+  return context; // context가 있는 경우
+}
