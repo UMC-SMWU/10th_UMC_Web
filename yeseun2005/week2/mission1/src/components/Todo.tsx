@@ -5,13 +5,40 @@ const Todo = () => {
   const [todos, setTodos] = useState<TTodo[]>([]);
   const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
   const [input, setInput] = useState<string>('');
+  
+  console.log('Input', input);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const text = input.trim();
+
+    if (text) {
+      const newTodo: TTodo = { id: Date.now(), text };
+      setTodos((prevTodos): TTodo[] => [...prevTodos, newTodo]);
+      setInput('');
+    }
+  };
+
+  const completeTodo =(todo: TTodo) => {
+    setTodos((prevTodos): TTodo[] => prevTodos.filter((t)=> t.id
+    !== todo.id));
+    setDoneTodos((prevDoneTodos)=> [...prevDoneTodos, todo]);
+  };
+
+  const deleteTodo = (todo: TTodo)=> {
+    setDoneTodos((prevDonetodo): TTodo[] =>
+      prevDonetodo.filter((t)=> t.id !== todo.id)
+    );
+  }
 
   return (
     <div className='todo-container'>
       <h1 className='todo-container__header'>차미 TODO</h1>
-      <form className='todo-container__form'>
+      <form onSubmit={handleSubmit} className='todo-container__form'>
         <input
+        value={input}
         type='text'
+        onChange={(e) => setInput(e.target.value)}
         className='todo-container__input'
         placeholder='할 일 입력'
         required
@@ -28,12 +55,13 @@ const Todo = () => {
               <li key={todo.id} className='render-container__item'>
               <span className='render-container__item-text'>{todo.text}</span>
               <button
+                onClick={()=> completeTodo(todo)}
                 style={{
                   backgroundColor: '#28a745',
                 }}
                 className='render-container__item-button'
               >
-                삭제
+                완료
               </button>
             </li>
             ))}
@@ -46,6 +74,7 @@ const Todo = () => {
               <li key={todo.id} className='render-container__item'>
               <span className='render-container__item-text'>{todo.text}</span>
               <button
+                onClick={() => deleteTodo(todo)}
                 style={{
                   backgroundColor: '#dc3545',
                 }}
