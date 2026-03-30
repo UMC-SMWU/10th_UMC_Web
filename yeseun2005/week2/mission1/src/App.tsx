@@ -1,11 +1,10 @@
-import './App.css'
+import './App.css';
+import Todo from './components/Todo';
 
 function App() {
-  return (
-    <>
-      <h1>Hello React</h1>
-    </>
-  )
+  return <>
+      <Todo />
+    </>;
 }
 
-export default App
+export default App;
