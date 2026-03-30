@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { TTodo } from '../types/todo';
+import type { FormEvent } from 'react';
 
 const Todo = () => {
   const [todos, setTodos] = useState<TTodo[]>([]);
@@ -8,7 +9,7 @@ const Todo = () => {
   
   console.log('Input', input);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const text = input.trim();
 
