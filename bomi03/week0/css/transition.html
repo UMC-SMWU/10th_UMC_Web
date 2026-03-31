@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+  <meta charset="UTF-8">
+  <title>transition + transform advanced</title>
+  <style>
+    .container{
+      display: grid;
+      grid-template-columns: 140px;
+      gap: 42px;
+      padding: 20px;
+    }
+    .diamond {
+      width: 100px;
+      height: 100px;
+      background-color: rgb(241, 188, 241);
+      transform: rotate(45deg);
+      transition: all 0.6s ease;
+    }
+    .translate:hover {
+      background-color: purple;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="diamond translate"></div>
+        <div class="diamond translate"></div>
+        <div class="diamond translate"></div>
+    </div>
+</body>
+</html>
