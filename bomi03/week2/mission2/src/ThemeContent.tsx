@@ -13,7 +13,7 @@ const ThemeContent = () => {
     >
       <h1
         className={clsx(
-          'text-wxl font-bold',
+          'font-bold',
           isLightMode ? 'text-black' : 'text-white'
         )}
       >
