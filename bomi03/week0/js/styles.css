@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #eef2f7;
+  font-family: Arial, sans-serif;
+  color: black;
+}
+
+.study-plan {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.study-plan__header {
+  padding-top: 70px;
+  text-align: center;
+}
+
+.study-plan__title {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.study-plan__main {
+  width: 80%;
+  max-width: 1100px;
+  margin: 90px auto 0;
+  border-top: 2px solid #d9e0ea;
+  padding-top: 22px;
+}
+
+.study-plan__input {
+  display: block;
+  width: 78%;
+  height: 64px;
+  margin: 0 auto;
+  padding: 0 20px;
+  border: 2px solid #555555;
+  background-color: white;
+  font-size: 20px;
+  outline: none;
+}
+
+.study-plan__input::placeholder {
+  color: #d4d8df;
+  font-style: italic;
+}
+
+.study-plan__board {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding: 0 110px;
+}
+
+.study-plan__column {
+  width: 34%;
+}
+
+.study-plan__subtitle {
+  width: fit-content;
+  margin: 0 auto 42px;
+  font-size: 26px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  border-bottom: 4px solid #d9e0ea;
+}
+
+.study-plan__list {
+  list-style: none;
+}
+
+.study-plan__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 4px solid #d9e0ea;
+  margin-bottom: 12px;
+}
+
+.study-plan__text {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.study-plan__button {
+  min-width: 56px;
+  height: 34px;
+  border: none;
+  background-color: #d9deea;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.study-plan__button--complete {
+  color: black;
+}
+
+.study-plan__button--delete {
+  color: black;
+}
+
+.study-plan__item--done .study-plan__text {
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .study-plan__title {
+    font-size: 38px;
+  }
+
+  .study-plan__main {
+    width: 88%;
+  }
+
+  .study-plan__input {
+    width: 100%;
+  }
+
+  .study-plan__board {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0;
+  }
+
+  .study-plan__column {
+    width: 100%;
+  }
+}
