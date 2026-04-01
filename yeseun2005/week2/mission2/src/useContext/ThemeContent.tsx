@@ -13,7 +13,17 @@ export default function ThemeContent() {
             isLightMode ? 'bg-white' : 'bg-gray-800'
         )}
         >
-            ThemeContent
+            <h1
+            className={clsx(
+                'text-wxl font-bold',
+                isLightMode ? 'text-black' : 'text-white'
+            )}
+            >
+                차미의 week2/mission2
+            </h1>
+            <p className={clsx('mt-2', isLightMode ? 'text-black' : 'text-white')}>
+                UMC 최고
+            </p>
         </div>
     );
 }
