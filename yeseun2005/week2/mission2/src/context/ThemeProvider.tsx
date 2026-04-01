@@ -1,6 +1,6 @@
-import { createContext, type PropsWithChildren, useState } from 'react';
+import { createContext, type PropsWithChildren, useState, useContext } from 'react';
 
-enum THEME {
+export enum THEME {
     LIGHT ='LIGHT',
     DARK = 'DARK',
 }
@@ -12,7 +12,7 @@ interface IThemeContext {
     toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<IThemeContext | undefined>(undefined);
+export const ThemeContext = createContext<IThemeContext | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
     const [theme, setTheme ] = useState<TTheme>(THEME.LIGHT);
@@ -28,4 +28,14 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
             {children}
         </ThemeContext.Provider>
     );
+};
+
+export const useTheme = () => {
+    const context = useContext(ThemeContext);
+
+    if (!context) {
+        throw new Error('useTheme must be used within a ThemeProvider');
+    }
+
+    return context;
 };
