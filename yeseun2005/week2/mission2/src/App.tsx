@@ -1,4 +1,4 @@
-import ContextPage from './context/ContextPage';
+import ContextPage from './useContext/ContextPage';
 import './App.css';
 
 export default function App() {

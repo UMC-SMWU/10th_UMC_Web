@@ -1,4 +1,4 @@
-import { THEME, useTheme } from './ThemeProvider';
+import { THEME, useTheme } from '../context/ThemeProvider';
 import clsx from 'clsx';
 
 export default function ThemeToggleButton() {
