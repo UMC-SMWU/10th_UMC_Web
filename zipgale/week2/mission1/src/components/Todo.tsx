@@ -2,7 +2,6 @@
 import TodoForm from './TodoForm';
 import TodoList from './TodoList'
 import { useTodo } from '../contexts/TodoContext';
-
 const Todo = () => {
     const {todos, completeTodo, doneTodos, addTodo, deleteTodo} = useTodo();
   return (
@@ -17,4 +16,6 @@ const Todo = () => {
   )
 }
 
+
 export default Todo;
+
