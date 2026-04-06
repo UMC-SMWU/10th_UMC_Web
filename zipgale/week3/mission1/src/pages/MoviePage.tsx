@@ -6,11 +6,11 @@ export default function MoviePage() {
   const[movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    const fetchMovie = async () => { // 주소 에러 발생 -> 
+    const fetchMovie = async () => {
       const {data} = await axios.get<MovieResponse>('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc',
         {
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`
+            Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`
             //'Content-Type': 'application/json;charset=utf-8' // <- application/json은 기본적으로 처리되어있음
           }
         }
