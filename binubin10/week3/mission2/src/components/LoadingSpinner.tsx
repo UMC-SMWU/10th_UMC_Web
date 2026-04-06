@@ -5,7 +5,7 @@ export const LoadingSpinner = () => {
   border-t-transparent border-[#b2dab1]"
       role="status"
     >
-      <span className="sc-only">로딩 중...</span>
+      <span className="sr-only">로딩 중...</span>
     </div>
   );
 };
