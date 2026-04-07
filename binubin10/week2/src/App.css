@@ -1,0 +1,50 @@
+/* 전체 화면 초기화 및 왼쪽 정렬 */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: white;
+}
+
+/* 텍스트와 버튼을 감싸는 박스 */
+.container {
+  padding: 50px; /* 왼쪽과 위쪽 여백 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* 1번 사진 특유의 아주 크고 굵은 텍스트 */
+.container p {
+  font-size: 80px; /* 1번 사진처럼 거대한 크기 */
+  font-weight: 900; /* 가장 굵은 두께 */
+  color: black; /* 선명한 검정색 */
+  margin: 10px 0; /* 줄 사이 간격 최소화 */
+  letter-spacing: -3px; /* 글자 사이를 살짝 붙여서 더 묵직하게 */
+}
+
+/* 버튼들을 가로로 배치 */
+.button-group {
+  display: flex;
+  gap: 10px; /* 버튼 사이 간격 */
+  margin-top: 30px; /* 텍스트와 버튼 사이 거리 */
+}
+
+/* 1번 사진의 시스템 기본 버튼 같은 스타일 */
+.button-group button {
+  padding: 8px 16px; /* 버튼 안쪽 여백 */
+  font-size: 28px; /* 버튼 글자 크기 */
+  font-weight: bold;
+  background-color: #f0f0f0; /* 연한 회색 */
+  border: 2px solid #767676; /* 진한 회색 테두리 */
+  border-radius: 4px; /* 아주 살짝 둥근 모서리 */
+  cursor: pointer;
+  color: black;
+}
+
+/* 버튼 클릭 시 효과 */
+.button-group button:active {
+  background-color: #dcdcdc;
+}

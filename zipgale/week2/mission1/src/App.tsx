@@ -2,11 +2,9 @@ import { useState } from 'react'
 import './App.css'
 {/*import TodoBefore from './components/TodoBefore'*/}
 import Todo from './components/Todo'
-import { TodoProvider } from './contexts/TodoCOntext'
+import { TodoProvider } from './contexts/TodoContext'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
     <TodoProvider>

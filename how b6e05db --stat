@@ -1,0 +1,83 @@
+[33mcommit b6e05db2af9c4f0093fbd41addd15117cf7a6ab5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32myw11191/week3/mission1[m[33m, [m[1;31morigin/yw11191/week3/mission1[m[33m)[m
+Author: yw11191 <jyeono3c@gmail.com>
+Date:   Tue Apr 7 17:43:36 2026 +0900
+
+    [Fix] 테스팅용 코드 삭제/테일윈드 오타 수정
+
+[33mcommit 5a536fc9f76261df4f3942741a1a01af306b9da2[m[33m ([m[1;31morigin/yw11191/week3/practice[m[33m, [m[1;31morigin/yw11191/week3/mission2[m[33m, [m[1;32myw11191/week3/mission2[m[33m)[m
+Author: yw11191 <jyeono3c@gmail.com>
+Date:   Tue Apr 7 01:37:46 2026 +0900
+
+    [주연우/우주] 3주차 mission1 정리내용 제출
+
+[33mcommit dc4cfa718f0aaef48e3a5b992d77754068c7de2c[m[33m ([m[1;31morigin/yw11191/week2/mission2[m[33m, [m[1;32myw11191/week2/mission2[m[33m)[m
+Author: yw11191 <jyeono3c@gmail.com>
+Date:   Tue Mar 31 02:45:47 2026 +0900
+
+    [Feat(우주/주연우)] week2 mission2 완료
+
+[33mcommit 14ee76248d0920124c4519dfb7df6838aa74ac12[m[33m ([m[1;31morigin/yw11191/week2/mission1[m[33m, [m[1;32myw11191/week2/mission1[m[33m)[m
+Author: yw11191 <jyeono3c@gmail.com>
+Date:   Mon Mar 30 14:02:05 2026 +0900
+
+    [Feat(우주/주연우)] week2 mission1 완료
+
+[33mcommit 944896d081ef998b8ad783eba6ec3c6602dd3df9[m[33m ([m[1;31morigin/yw11191/week1/mission1[m[33m, [m[1;32myw11191/week1/mission1[m[33m)[m
+Author: yw11191 <jyeono3c@gmail.com>
+Date:   Tue Mar 24 16:10:58 2026 +0900
+
+    [Refactor(우주/주연우)] 불필요한 :void 삭제
+
+[33mcommit d95fc13cccf35d0f3324de242f4756920d266980[m
+Author: yw11191 <chocolatier@sookmyung.ac.kr>
+Date:   Sun Mar 22 21:24:12 2026 +0900
+
+    [Feat(우주/주연우)] 1주차 미션 완료]
+
+[33mcommit ea9a089c688c59e6346c6d5d355e78fb93fb8189[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: 김가인 <kimgain0525@sookmyung.ac.kr>
+Date:   Wed Mar 18 14:04:14 2026 +0900
+
+    Update README with PR submission guidelines
+    
+    Add instructions for PR message format and template.
+
+[33mcommit e8edad7882419835d2157dd2da855a09428fdb55[m
+Author: 김가인 <kimgain0525@sookmyung.ac.kr>
+Date:   Wed Mar 18 13:57:42 2026 +0900
+
+    Create pull_request_template.md for PR submissions
+    
+    Add a pull request template for UMC 9th web submissions.
+
+[33mcommit 066bbaf0c4ef5f7376157c909b678815bd3ac9ea[m
+Author: 김가인 <kimgain0525@sookmyung.ac.kr>
+Date:   Wed Mar 18 13:56:57 2026 +0900
+
+    Delete PR_TEMPLATE directory
+
+[33mcommit f20424c8bf61f5b50e2296ed1c0cdb3681f67056[m
+Author: 김가인 <kimgain0525@sookmyung.ac.kr>
+Date:   Wed Mar 18 13:53:55 2026 +0900
+
+    Revise README for cloning instructions and branch naming
+    
+    Updated instructions for cloning the repository and branch naming conventions.
+
+[33mcommit a4de5fb65934d4fdbf25ed4814962fa67cdac223[m
+Author: 김가인 <kimgain0525@sookmyung.ac.kr>
+Date:   Tue Mar 17 16:50:29 2026 +0900
+
+    Add pull request template for UMC 9th web
+
+[33mcommit 9529c27e694b9b3019e285df3d63f711270d7075[m
+Author: 숙명여자대학교UMC <128134294+SMWUUMC@users.noreply.github.com>
+Date:   Mon Mar 16 00:29:57 2026 +0900
+
+    Update README.md
+
+[33mcommit ed8f7afe57d4c937f2181195dbaf9d475bcc117d[m
+Author: 숙명여자대학교UMC <128134294+SMWUUMC@users.noreply.github.com>
+Date:   Mon Mar 16 00:28:45 2026 +0900
+
+    Initial commit

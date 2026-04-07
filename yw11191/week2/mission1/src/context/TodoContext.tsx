@@ -11,8 +11,7 @@ interface ITodoContext {
 
 export const TodoContext = createContext<ITodoContext | undefined> (undefined);
 
-export const TodoProvider = ({children}:
-PropsWithChildren) => {
+export const TodoProvider = ({children}:PropsWithChildren) => {
     const [todos, setTodos] = useState<TTodo[]> ([]);
     const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
 
