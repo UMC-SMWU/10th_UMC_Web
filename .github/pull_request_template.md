@@ -1,7 +1,7 @@
 ---
 name: pr template
 about: 숙명여대 UMC 10th web PR 템플릿입니다.
-title: "[우주/주연우] 1주차 정리내용 제출."
+title: "[이름/닉네임] ㅇ주차 정리내용 제출."
 labels: ''
 assignees: yw11191
 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>block / inline / inline-block test</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Apple SD Gothic Neo", "Malgun Gothic";
+      margin: 24px;
+      line-height: 1.6;
+      background: #fafafa;
+      color: #222;
+    }
+
+    .section {
+      background: white;
+      border: 1px solid #ddd;
+
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .wrap {
+      border: 2px dashed #bbb;
+      padding: 14px;
+      background: #fcfcfc;
+    }
+
+    .box {
+      background: #dbeafe;
+      border: 2px solid #60a5fa;
+      padding: 10px 14px;
+      margin: 6px 0;
+    }
+
+    .inline-box {
+      background: #fee2e2;
+      border: 2px solid #f87171;
+      padding: 10px 14px;
+      margin: 6px 0;
+    }
+
+    .inline-block-box {
+      background: #dcfce7;
+      border: 2px solid #4ade80;
+      padding: 10px 14px;
+      margin: 6px 0;
+      width: 180px;
+      height: 60px;
+    }
+
+    .block .box { display: block; }
+    .inline .inline-box { display: inline; }
+    .inline-block .inline-block-box {
+      display: inline-block;
+      vertical-align: top;
+    }
+  </style>
+</head>
+<body>
+  <h1>block / inline / inline-block test</h1>
+
+  <div class="section block">
+    <h2>1. block</h2>
+    <div class="wrap">
+      <div class="box">block 1</div>
+      <div class="box">block 2</div>
+      <div class="box">block 3</div>
+    </div>
+    <p> → 한 줄 전부를 차지하며, 다른 요소들은 그 다음 줄에 배치된다.</p>
+  </div>
+
+  <div class="section inline">
+    <h2>2. inline</h2>
+    <div class="wrap">
+      <span class="inline-box">inline 1</span>
+      <span class="inline-box">inline 2</span>
+      <span class="inline-box">inline 3</span>
+    </div>
+    <p>→ 자기 크기만큼만 공간을 차지한다.</p>
+  </div>
+
+  <div class="section inline-block">
+    <h2>3. inline-block</h2>
+    <div class="wrap">
+      <span class="inline-block-box">inline-block 1</span>
+      <span class="inline-block-box">inline-block 2</span>
+      <span class="inline-block-box">inline-block 3</span>
+    </div>
+    <p>→ inline처럼 한 줄에 옆으로 나열되면서도, block처럼 width/height를 지정할 수 있다.</p>
+  </div>
+</body>
+</html>
