@@ -3,6 +3,7 @@ import axios from 'axios';
 import type { Movie, MovieResponse } from '../types/movie';
 import MovieCard from '../components/MovieCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { useParams } from 'react-router-dom';
 
 export default function MoviePage() {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -13,6 +14,10 @@ export default function MoviePage() {
     /// 3. 페이지
     const [page, setPage] = useState(1);
 
+    const { category } = useParams<{
+        category: string;
+    }>();
+    
     useEffect(() => {
         const fetchMovies = async () => {
             setIsPending(true);
@@ -20,7 +25,7 @@ export default function MoviePage() {
 
             try {
             const { data } = await axios.get<MovieResponse>(
-                 `https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`,
+                 `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
                  {
                     headers : {
                         Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
@@ -37,7 +42,7 @@ export default function MoviePage() {
     };
             
         fetchMovies();
-    }, [page]);
+    }, [page, category]);
 
     if (isError) {
         return (
