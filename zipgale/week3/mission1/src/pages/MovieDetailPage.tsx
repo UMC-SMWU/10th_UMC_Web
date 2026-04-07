@@ -10,7 +10,7 @@ export default function MovieDetailPage() {
   const [movieDetail, setMovieDetail] = useState<MovieDetail>();
   const [casts, setCasts] = useState<MovieCast []>();
   const [isPending, setIsPending] = useState(false);
-  const [iserror, setIsError] = useState(false);
+  const [isError, setIsError] = useState(false);
   const {id} = useParams<{
       id: string;
     }>();
@@ -45,7 +45,7 @@ export default function MovieDetailPage() {
     fetchMovie();
   }, [id]);
 
-  if (iserror) {
+  if (isError) {
       return (
         <div>
           <span className="text-red-500 text-2xl">에러가 발생했습니다.</span>
