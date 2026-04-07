@@ -4,5 +4,5 @@ interface ImportMetaEnv {
 }
 
 interface ImportMeta {
-    readonly env: VITE_TMDB_KEY;
+    readonly env: ImportMetaEnv;
 }

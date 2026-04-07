@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { Movie } from '../types/movie';
+import MovieCard from '../components/MovieCard';
 
 export default function MoviePage() {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -24,14 +25,11 @@ export default function MoviePage() {
 
     
     return (
-        <div>
-            {movies &&
-            movies.map((movie) => (
-                <div key ={movie.id}>
-                    <h2>{movie.title}</h2>
-                    <p>{movie.overview}</p>
-                </div>
-            ))} 
-        </div>
+    <div>
+        {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+        ))}
+    </div>
+
     );
 }
