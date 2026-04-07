@@ -39,7 +39,7 @@ export default function MoviePage() {
     };
     fetchMovie();
   }, [page, category]);
-  console.log(movies);
+  //console.log(movies);
 
 
   if (iserror) {

@@ -28,11 +28,43 @@ export type Movie = {
   video: boolean;
   vote_average: number;
   vote_count: number;
-}
+};
 
-export type MovieResponse = { // data의 타입 정의
+export type MovieResponse = {
+  // data의 타입 정의
   page: number;
   results: Movie[];
   totalPages: number;
   total_results: number;
+};
+
+export type MovieDetail = {
+  adult: boolean;
+  backdrop_path: string;
+  genres: number [];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  runtime: number;
+};
+
+export type MovieCastResponse = {
+  id: number;
+  cast: MovieCast[];
+}
+
+export type MovieCast = {
+  name: string;
+  profile_path: string;
+  character: string;
+  known_for_department: string;
+  cast_id: number;
 }
