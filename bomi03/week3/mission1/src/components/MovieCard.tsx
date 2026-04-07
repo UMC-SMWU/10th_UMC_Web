@@ -1,0 +1,39 @@
+import { useState } from "react";
+import type { Movie } from "../types/movie";
+
+interface MovieCardProps {
+  movie: Movie;
+}
+
+export default function MovieCard({ movie }: MovieCardProps) {
+  const [isHovered, setIsHovered] = useState(false); // 호버되었는지 안되었는지에 대한 상태
+
+  return (
+    <div
+      className="relative rounded-xl shadow-lg overflow-hidden cursor-pointer w-44 transition-transform duration-500 hover:scale-105"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <img
+        src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+        alt={`${movie.title}영화의 이미지`} // 이미지가 보이지 않을 경우의 예외 처리
+        className=""
+      />
+
+      {isHovered && (
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent backdrop-blur-md text-white
+        flex flex-col justify-center items-center p-4"
+        >
+          <h2 className="text-lg font-bold leading-snug">{movie.title}</h2>
+          <p
+            className="text-sm text-gray-300 leading-relaxed mt-2
+          line-clamp-5"
+          >
+            {movie.overview}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
