@@ -2,29 +2,75 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import type { Movie, MovieResponses } from "../types/movie";
 import MovieCard from "../components/MovieCard";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { useParams } from "react-router-dom";
 
 export default function MoviePage() {
+    const [isPending, setIsPending] = useState(false); // 1. 로딩 상태
+    const [isError, setIsError] = useState(false); // 2. 에러 상태
+    const [page, setPage] = useState(1); // 3. 페이지
+
+    const {category} = useParams<{
+        category:string;
+    }>();
+
     const [movies, setMovies] = useState<Movie[]>([]); // 제너릭으로 Movie만 들어갈 수 있는 배열이다 라고 선언
 
     useEffect(() => {
         const fetchMovies = async () => {
-            const {data} = await axios.get<MovieResponses>(`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`
-                    },
-                }
-            );
+            setIsPending(true);
+            try {
+                const {data} = await axios.get<MovieResponses>(`https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`
+                        },
+                    }
+                );
 
-            setMovies(data.results);
-        }
+                setMovies(data.results);
+            } catch {
+                setIsError(true);
+            } finally {
+                setIsPending(false);
+            }
+        };
         fetchMovies();
-    }, []);
-    return (
-        <div className='p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-        {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie}/>
-        ))}
+    }, [page, category]);
+
+    if (isError) {
+        return <div>
+        <span className="text-red-500 text-2xl">에러가 발생했습니다.</span>
     </div>
+    }
+
+    return (
+        <>
+        <div className="flex items-center justify-center gap-6 mt-5">
+            <button 
+            className='bg-[#dda5e3] text-white px-6 py-3 rounded-lg shadow-md 
+            hover:bg-[#b2dab1] transition-all duration-200 disabled:bg-gray-300 cursor-pointer disabled:cursor-not-allowed' 
+            disabled={page===1} onClick={() => setPage((prev) => prev -1)}>{`<`}</button>
+            <span>{page} 페이지</span>
+            <button
+            className='bg-[#dda5e3] text-white px-6 py-3 rounded-lg shadow-md 
+            hover:bg-[#b2dab1] transition-all duration-200 cursor-pointer' 
+            onClick={() => setPage((prev) => prev +1)}>{`>`}</button>            
+        </div>
+
+        {isPending && (
+            <div className="flex items-center justify-center h-dvh">
+                <LoadingSpinner></LoadingSpinner>
+            </div>
+        )}
+
+        {!isPending && (
+            <div className='p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+            {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie}/>
+                ))}
+        </div>
+        )}        
+        </>
     )
 }
