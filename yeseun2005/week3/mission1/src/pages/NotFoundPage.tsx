@@ -1,3 +1,3 @@
 export default function NotFoundPage() {
-    return <div>못찾음 ㅅㄱ</div>;
+    return <div>여기가 어디지?</div>;
 }
