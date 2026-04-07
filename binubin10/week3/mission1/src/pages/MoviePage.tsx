@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { Movie, MovieResponse } from '../types/movie';
 import MovieCard from '../components/MovieCard';
 
-export default function Moviepage() {
+export default function MoviePage() {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {

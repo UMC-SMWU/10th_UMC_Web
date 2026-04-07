@@ -11,7 +11,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <div
       className="relative rounded-xl shadow-lg overflow-hidden cursor-pointer 
-      w-38 transition-transform duration-500 hover:scale-105"
+      w-40 transition-transform duration-500 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
