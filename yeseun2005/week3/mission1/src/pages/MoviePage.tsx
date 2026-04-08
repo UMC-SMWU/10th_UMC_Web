@@ -3,7 +3,8 @@ import axios from 'axios';
 import type { Movie, MovieResponse } from '../types/movie';
 import MovieCard from '../components/MovieCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+
 
 export default function MoviePage() {
     const [movies, setMovies] = useState<Movie[]>([]);
