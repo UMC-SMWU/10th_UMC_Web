@@ -1,42 +1,21 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
-import type { Movie, MovieResponses } from "../types/movie";
+import { useState } from "react"
+import type { MovieResponses } from "../types/movie";
 import MovieCard from "../components/MovieCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { useParams } from "react-router-dom";
+import useCustomFetch from "../hooks/useCustomFetch";
 
 export default function MoviePage() {
-    const [isPending, setIsPending] = useState(false); // 1. 로딩 상태
-    const [isError, setIsError] = useState(false); // 2. 에러 상태
-    const [page, setPage] = useState(1); // 3. 페이지
+    const [page, setPage] = useState(1);
 
     const {category} = useParams<{
         category:string;
     }>();
 
-    const [movies, setMovies] = useState<Movie[]>([]); // 제너릭으로 Movie만 들어갈 수 있는 배열이다 라고 선언
-
-    useEffect(() => {
-        const fetchMovies = async () => {
-            setIsPending(true);
-            try {
-                const {data} = await axios.get<MovieResponses>(`https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`
-                        },
-                    }
-                );
-
-                setMovies(data.results);
-            } catch {
-                setIsError(true);
-            } finally {
-                setIsPending(false);
-            }
-        };
-        fetchMovies();
-    }, [page, category]);
+    const {data, isPending, isError} = useCustomFetch<MovieResponses>(
+        `/movie/${category}?language=ko-KR&page=${page}`
+    );
 
     if (isError) {
         return <div>
@@ -58,19 +37,14 @@ export default function MoviePage() {
             onClick={() => setPage((prev) => prev +1)}>{`>`}</button>            
         </div>
 
-        {isPending && (
-            <div className="flex items-center justify-center h-dvh">
-                <LoadingSpinner></LoadingSpinner>
-            </div>
-        )}
-
-        {!isPending && (
-            <div className='p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-            {movies.map((movie) => (
+        {isPending ? (
+            <div className="flex items-center justify-center h-dvh"><LoadingSpinner/></div>
+        ) : <div className='p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+            {data?.results.map((movie) => (
                 <MovieCard key={movie.id} movie={movie}/>
                 ))}
         </div>
-        )}        
+        }      
         </>
     )
 }

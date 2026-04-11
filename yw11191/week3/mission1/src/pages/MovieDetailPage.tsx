@@ -1,51 +1,22 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { type MovieDetails, type Cast, type MovieCreditsResponse } from '../types/movie';
+import { type MovieDetails, type MovieCreditsResponse } from '../types/movie';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import useCustomFetch from '../hooks/useCustomFetch';
 
 export const MovieDetailPage = () => {
     const { movieId } = useParams();
-    const [movie, setMovie] = useState<MovieDetails | null>(null);
-    const [cast, setCast] = useState<Cast[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
+    const {data:movie, isPending:isMoviePending, isError:isMovieError} = useCustomFetch<MovieDetails>(`/movie/${movieId}?language=ko-KR`);
+    const {data:credits, isPending:isCreditsPending, isError:isCreditsError} = useCustomFetch<MovieCreditsResponse>(`/movie/${movieId}/credits?language=ko-KR`);
 
-    useEffect(() => {
-        const fetchMovieData = async () => {
-            setIsLoading(true);
-            try {
-                // 1. 영화 상세 정보 가져오기
-                const detailRes = await axios.get<MovieDetails>(
-                    `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
-                    { headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}` } }
-                );
-                // 2. 출연진 정보 가져오기
-                const creditsRes = await axios.get<MovieCreditsResponse>(
-                    `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`,
-                    { headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}` } }
-                );
+    if (isMoviePending || isCreditsPending) {
+        return <div className="h-screen flex justify-center items-center"><LoadingSpinner /></div>;
+    }
 
-                setMovie(detailRes.data);
-                setCast(creditsRes.data.cast);
-            } catch {
-                setIsError(true); // 에러 상태를 true로 변경
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    if (isMovieError || isCreditsError){
+        return <div className="text-white text-center mt-10 text-2xl">정보를 불러오지 못했습니다.</div>;
+    }
 
-        fetchMovieData();
-    }, [movieId]);
-
-    if (isLoading) return <div className="h-screen flex justify-center items-center"><LoadingSpinner /></div>;
-    if (!movie) return <div className="text-white text-center mt-10">영화 정보를 찾을 수 없습니다.</div>;
-    if (isError) return (
-    <div className="h-screen flex flex-col justify-center items-center text-white">
-        <h2 className="text-2xl font-bold mb-4 text-red-600">영화를 불러오는 중 문제가 발생했습니다.</h2>
-        <button onClick={() => window.location.reload()} className="bg-[#b2dab1] p-2 rounded text-black">다시 시도</button>
-    </div>
-);
+    if (!movie) return null;
 
     return (
         <div className="w-full text-white bg-[#090909]">
@@ -82,7 +53,7 @@ export const MovieDetailPage = () => {
             <div className="px-10 md:px-20 py-10">
                 <h2 className="text-2xl font-bold mb-8">감독/출연</h2>
                 <div className="w-full flex flex-wrap gap-10 pb-6">
-                    {cast.slice(0, 18).map((person, idx) => ( // 18명만 표시
+                    {credits?.cast.slice(0, 18).map((person, idx) => ( // 18명만 표시
                         <div key={idx} className="w-24 text-center space-y-2">
                             <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-700 mx-auto">
                                 <img 
