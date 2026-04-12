@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { useCustomFetch } from '../hooks/useCustomFetch';
 import type { MovieDetail, CreditsResponse } from '../types/movie';
-import noImage from '../assets/no_image.jpg';
 
 export default function MovieDetailPage() {
   const { movieId } = useParams<{ movieId: string }>();
@@ -55,106 +54,66 @@ export default function MovieDetailPage() {
   const crew = credits?.crew ?? [];
 
   return (
-    <div className="relative flex flex-col items-center text-white">
-      {/* 배경 포스터 + 블러 + 그라데이션 */}
+    <div className="min-h-screen bg-black text-white font-sans">
+      {/* 3. 상단 히어로 섹션 (배경 포스터 및 요약 정보) */}
       <div
-        className="absolute inset-0 -z-10"
+        className="relative h-[500px] w-full bg-cover bg-center"
         style={{
-          backgroundImage: movie.poster_path
-            ? `linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,1) 100%), url(https://image.tmdb.org/t/p/original${movie.poster_path})`
-            : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'cover',
-          filter: 'blur(8px)',
+          backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.2) 100%), url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
         }}
-      ></div>
+      >
+        <div className="flex flex-col justify-center h-full px-10 md:px-20 max-w-6xl">
+          <h1 className="text-5xl font-bold mb-4">{movie.title}</h1>
 
-      {/* 영화 정보 + 포스터 */}
-      <div className="relative z-10 max-w-6xl w-full flex flex-col md:flex-row items-center gap-8">
-        {/* 영화 정보 */}
-        <div className="flex-1 space-y-4 text-white">
-          <h1 className="text-4xl md:text-5xl font-bold">{movie.title}</h1>
-          <div className="flex flex-wrap gap-4 text-gray-300">
-            <p>
-              <strong>개봉일:</strong> {movie.release_date}
-            </p>
-            <p>
-              <strong>평점:</strong> ⭐ {movie.vote_average}
-            </p>
-            <p>
-              <strong>상영 시간:</strong> {movie.runtime}분
-            </p>
-            <p>
-              <strong>장르:</strong>{' '}
-              {movie.genres?.map((g) => g.name).join(', ')}
-            </p>
+          <div className="flex items-center gap-4 text-lg mb-6 text-gray-300">
+            <span className="text-yellow-400 font-bold">
+              평점 {movie.vote_average.toFixed(1)}
+            </span>
+            <span>{movie.release_date.split('-')[0]}</span>
+            <span>{movie.runtime}분</span>
           </div>
-          <div className="mt-4 text-gray-200">
-            <h2 className="text-2xl font-semibold mb-2">줄거리</h2>
-            <p>{movie.overview || '등록된 줄거리가 없습니다.'}</p>
-          </div>
-        </div>
 
-        {/* 포스터 */}
-        <div className="flex-shrink-0">
-          <img
-            src={
-              movie.poster_path
-                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                : noImage
-            }
-            alt={movie.title}
-            className="w-64 md:w-80 rounded-xl shadow-2xl"
-          />
+          {movie.tagline && (
+            <p className="text-2xl italic text-gray-400 mb-6">
+              "{movie.tagline}"
+            </p>
+          )}
+
+          <p className="text-lg leading-relaxed text-gray-200 max-w-3xl line-clamp-6">
+            {movie.overview || '등록된 줄거리가 없습니다.'}
+          </p>
         </div>
       </div>
 
-      {/* 출연진 */}
-      <div className="bg-black text-white mt-10 p-6 rounded-xl shadow-lg w-full">
-        <h2 className="text-2xl font-semibold mb-4">출연진</h2>
-        <div className="flex gap-4 overflow-x-auto">
-          {cast.slice(0, 10).map((actor) => (
-            <div key={actor.id} className="text-center flex-shrink-0 w-28">
-              <img
-                src={
-                  actor.profile_path
-                    ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
-                    : noImage
-                }
-                alt={actor.name}
-                className="w-full rounded-lg mb-2"
-              />
-              <p className="text-sm">{actor.name}</p>
-              <small className="text-gray-400">({actor.character})</small>
+      {/* 4. 감독/출연 섹션 */}
+      <div className="px-10 md:px-20 py-12">
+        <h2 className="text-3xl font-bold mb-10">감독/출연</h2>
+
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8">
+          {credits?.cast.slice(0, 20).map((person) => (
+            <div key={person.id} className="flex flex-col items-center group">
+              {/* 프로필 이미지 (원형) */}
+              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-gray-500 transition-colors duration-300 aspect-square">
+                <img
+                  src={
+                    person.profile_path
+                      ? `https://image.tmdb.org/t/p/w200${person.profile_path}`
+                      : 'https://via.placeholder.com/200x200?text=No+Image'
+                  }
+                  alt={person.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* 이름 및 배역 */}
+              <div className="mt-3 text-center w-full">
+                <p className="text-sm font-bold truncate px-1">{person.name}</p>
+                <p className="text-[11px] text-gray-500 truncate px-1 mt-1">
+                  {person.character} 역
+                </p>
+              </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* 제작진 */}
-      <div className="bg-black text-white mt-10 p-6 rounded-xl shadow-lg w-full">
-        <h2 className="text-2xl font-semibold mb-4">주요 제작진</h2>
-        <div className="flex gap-4 overflow-x-auto">
-          {crew
-            .filter((c) => ['Director', 'Producer', 'Writer'].includes(c.job))
-            .map((member) => (
-              <div key={member.id} className="text-center flex-shrink-0 w-28">
-                <div className="w-full h-40 rounded-lg mb-2 bg-gray-400 flex items-center justify-center overflow-hidden">
-                  {member.profile_path ? (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w200${member.profile_path}`}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-white text-sm">이미지 없음</span>
-                  )}
-                </div>
-                <p className="text-sm">{member.name}</p>
-                <small className="text-gray-400">{member.job}</small>
-              </div>
-            ))}
         </div>
       </div>
     </div>

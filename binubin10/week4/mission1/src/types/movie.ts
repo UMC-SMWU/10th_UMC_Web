@@ -17,51 +17,42 @@ export type Movie = {
 
 export type MovieResponse = {
   page: number;
-  results: Movie[];
   total_pages: number;
   total_results: number;
+  results: Movie[];
 };
 
-export interface Genre {
-  id: number;
-  name: string;
-}
-
-export interface MovieDetail {
+export type MovieDetail = {
   id: number;
   title: string;
-  original_title: string;
-  backdrop_path: string;
-  poster_path: string;
-  vote_average: number;
-  release_date: string;
-  runtime: number;
-  tagline: string;
   overview: string;
-  genres: Genre[];
-}
+  poster_path: string;
+  release_date: string;
+  vote_average: number;
+  runtime: number;
+  genres: { id: number; name: string }[];
+  backdrop_path: string;
+  tagline: string;
+  status: string;
+};
 
-export interface Cast {
+export type Cast = {
   id: number;
   name: string;
-  original_name: string;
   character: string;
   profile_path: string | null;
-  popularity: number;
-  order: number;
-}
+};
 
-export interface Crew {
+export type Crew = {
   id: number;
   name: string;
-  original_name: string;
-  department: string;
   job: string;
+  department: string;
   profile_path: string | null;
-}
+};
 
-export interface CreditsResponse {
+export type CreditsResponse = {
   id: number;
   cast: Cast[];
   crew: Crew[];
-}
+};
