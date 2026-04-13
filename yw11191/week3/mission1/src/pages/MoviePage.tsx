@@ -1,4 +1,3 @@
-import axios from "axios"
 import { useState } from "react"
 import type { MovieResponses } from "../types/movie";
 import MovieCard from "../components/MovieCard";

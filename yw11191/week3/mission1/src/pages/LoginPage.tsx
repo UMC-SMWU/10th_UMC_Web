@@ -28,13 +28,13 @@ const LoginPage = () => {
     const isFormValid = !errors.email && !errors.password && values.email && values.password;
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-6">
-            <div className="w-full max-w-sm">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-6 relative">
+            <div className="w-full max-w-sm p-8 bg-black rounded-3xl border border-gray-800 shadow-xl">
                 {/* 상단 헤더: 뒤로가기 & 타이틀 */}
                 <div className="flex items-center justify-center mb-10 relative">
                     <button 
                         onClick={() => navigate(-1)} 
-                        className="absolute left-0 text-xl hover:text-gray-400"
+                        className="absolute left-0 text-2xl text-gray-400 hover:text-white"
                     >
                         &lt;
                     </button>
@@ -48,20 +48,20 @@ const LoginPage = () => {
 
                 {/* 2. OR 구분선 */}
                 <div className="flex items-center gap-4 mb-6">
-                    <div className="flex-1 h-[1px] bg-gray-600"></div>
+                    <div className="flex-1 h-[1px] bg-gray-700"></div>
                     <span className="text-sm text-gray-400 font-bold">OR</span>
-                    <div className="flex-1 h-[1px] bg-gray-600"></div>
+                    <div className="flex-1 h-[1px] bg-gray-700"></div>
                 </div>
 
                 {/* 3. 이메일 로그인 폼 */}
-                <form onSubmit={handleLogin} className="flex flex-col gap-4">
+                <form onSubmit={handleLogin} className="flex flex-col gap-5">
                     <div className="flex flex-col gap-1">
                         <input
                             type="email"
                             placeholder="이메일을 입력해주세요!"
                             className={`w-full p-4 rounded-lg bg-[#1a1a1a] border ${
                                 touched.email && errors.email ? 'border-red-500' : 'border-gray-700 focus:border-white'
-                            } outline-none`}
+                            } outline-none placeholder:text-gray-100`}
                             {...getInputProps("email")}
                         />
                         {touched.email && errors.email && (
@@ -75,7 +75,7 @@ const LoginPage = () => {
                             placeholder="비밀번호를 입력해주세요!"
                             className={`w-full p-4 rounded-lg bg-[#1a1a1a] border ${
                                 touched.password && errors.password ? 'border-red-500' : 'border-gray-700 focus:border-white'
-                            } outline-none`}
+                            } outline-none placeholder:text-gray-100`}
                             {...getInputProps("password")}
                         />
                         {touched.password && errors.password && (
@@ -86,10 +86,10 @@ const LoginPage = () => {
                     <button
                         type="submit"
                         disabled={!isFormValid}
-                        className={`w-full p-4 mt-2 rounded-lg font-bold transition-all ${
+                        className={`w-full p-4 mt-2 rounded-lg font-bold text-lg transition-all ${
                             isFormValid 
-                            ? "bg-pink-600 hover:bg-pink-700" 
-                            : "bg-[#2a2a2a] text-gray-500 cursor-not-allowed"
+                            ? "bg-pink-600 hover:bg-pink-700 shadow-lg shadow-pink-900/20" 
+                            : "bg-[#1a1a1a] text-gray-400 cursor-not-allowed border border-gray-700"
                         }`}
                     >
                         로그인

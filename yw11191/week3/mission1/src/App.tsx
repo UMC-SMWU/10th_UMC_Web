@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NotFoundPage from './pages/NotFoundPage';
 import { MovieDetailPage } from './pages/MovieDetailPage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/signupPage';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage/>,
     children: [
       {
-        path: 'movies/:login',
+        path: 'signup',
+        element: <SignupPage/>
+      },
+      {
+        path: 'login',
         element: <LoginPage/>
       },
       {
