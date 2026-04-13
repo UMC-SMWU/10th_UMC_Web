@@ -10,9 +10,10 @@ export default function CastCard({ imagePath, name, subText }: Props) {
     : "https://placehold.co/100?text=No+Image"; // 이미지가 없는 경우 대체 이미지 사용
 
   return (
-    <div className="flex flex-col items-center min-w-[100px]">
+    <div className="flex flex-col items-center min-w-25">
       <img
         src={img}
+        alt={`${name} 프로필 이미지`}
         className="w-20 h-20 rounded-full object-cover"
       />
       <p className="text-sm mt-2">{name}</p>
