@@ -1,18 +1,33 @@
+import { validateSignin, type UserSigninInformation } from "../utils/validate";
 import useForm from "../hooks/useForm";
-import { type UserSigninInformation, validateSignin } from "../utils/validate";
 import { useNavigate } from "react-router-dom";
 import GoogleLogo from "../assets/GoogleLogo.png";
+import { postSignin } from "../apis/auth";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { LOCAL_STORAGE_KEY } from "../constants/key";
 
 const LoginPage = () => {
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const navigate = useNavigate();
 
-  const { values, errors, touched, getInputProps } = useForm<UserSigninInformation>({
-    initialValue: { email: "", password: "" },
-    validate: validateSignin,
-  });
+  const { values, errors, touched, getInputProps } =
+    useForm<UserSigninInformation>({
+      initialValue: { email: "", password: "" },
+      validate: validateSignin,
+    });
 
-  const handleSubmit = () => {
-    console.log(values);
+  const handleSubmit = async () => {
+    try {
+      const response = await postSignin(values);
+      setItem(response.data.accessToken);
+      navigate("/mypage");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("로그인 중 오류가 발생했습니다.");
+      }
+    }
   };
 
   const isDisabled =
@@ -87,7 +102,7 @@ const LoginPage = () => {
           type="button"
           onClick={handleSubmit}
           disabled={isDisabled}
-          className='w-full bg-[#073cb0] text-white py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-400'
+          className="w-full bg-[#073cb0] text-white py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-400"
         >
           로그인
         </button>
