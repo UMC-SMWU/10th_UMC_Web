@@ -12,7 +12,7 @@ const HomeLayout = () => {
             <main className='flex-1'>
                 <Outlet />
             </main>
-            <footer>푸터입니다.</footer>
+            <footer>© TMDB</footer>
         </div>
     )
 };
