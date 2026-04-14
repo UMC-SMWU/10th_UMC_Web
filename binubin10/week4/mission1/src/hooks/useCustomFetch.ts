@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 //useCustomFetch에서 요청 옵션을 전달할 타입 정의함
-interface FechOptions {
+interface FetchOptions {
   headers?: Record<string, string>; //headers는 HTTP 요청 헤더를 key-value 형태로 받을 수 있음
 }
 
 export function useCustomFetch<T>(
   url: string, //요청할 API 주소
-  FechOptions?: FechOptions, //HTTP 요청 헤더 등 옵션
+  FechOptions?: FetchOptions, //HTTP 요청 헤더 등 옵션
   deps: unknown[] = [],
 ) {
   const [data, setData] = useState<T | null>(null);
