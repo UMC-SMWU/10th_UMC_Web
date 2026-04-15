@@ -1,66 +1,64 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { useParams } from "react-router-dom";
-import type { MovieCast, MovieCastResponse, MovieDetail } from "../types/movie";
+import type { MovieCastResponse, MovieDetail } from "../types/movie";
 import SummaryPanel from "../components/SummaryPanel";
 import { CastCard } from "../components/CastCard";
+import { useCustomFetch } from "../hooks/useCustomFetch";
 
 export default function MovieDetailPage() {
-  const [movieDetail, setMovieDetail] = useState<MovieDetail>();
-  const [casts, setCasts] = useState<MovieCast []>();
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
   const {id} = useParams<{
       id: string;
     }>();
 
-  useEffect(() => {
-      const fetchMovie = async () => {
-        setIsPending(true);
-        try {
-          const {data} = await axios.get<MovieDetail>( 
-            `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
-            {
-              headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-              },
-            },
-          );
-          const {data : castData} = await axios.get<MovieCastResponse>(
-            `https://api.themoviedb.org/3/movie/${id}/credits?language=ko-KR`,{
-              headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-              },
-            }
-          );
-          setMovieDetail(data);
-          setCasts(castData.cast);
-        } catch {
-          setIsError(true); // 에러 발생
-        } finally {
-          setIsPending(false); // 로딩 끝
-        }
-    };
-    fetchMovie();
-  }, [id]);
+  const {data: movieDetail, isPending: isMovieLoading, isError: isMovieError} = useCustomFetch<MovieDetail>(
+    id
+    ? `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`
+    : "",
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+      },
+    },
+    [id]
+  );
 
-  if (isError) {
-      return (
-        <div>
-          <span className="text-red-500 text-2xl">에러가 발생했습니다.</span>
-        </div>
-      );
-    }
+  const {data: credits, isPending: isCreditsLoading, isError: isCreditsError } = useCustomFetch<MovieCastResponse>(
+    id 
+    ? `https://api.themoviedb.org/3/movie/${id}/credits?language=ko-KR`
+    : "",
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+      },
+    },
+    [id]
+  )
+
+  const loading = isMovieLoading || isCreditsLoading;
+  const error = isMovieError || isCreditsError;
+  
+  if(loading)
+    return (
+      <div className="flex items-center justify-center h-dvh">
+        <LoadingSpinner />
+      </div>
+    );
+  if(error)
+    return (
+      <div>
+        <span className="text-red-500 text-2xl">에러가 발생했습니다.</span>
+      </div>
+  );
+  if(!movieDetail)
+    return (
+      <p>❌ 영화 정보를 불러올 수 없습니다.</p>
+  );
+
+  const casts = credits?.cast ?? [];
 
   return (
     <>
-      {isPending && (
-        <div className="flex items-center justify-center h-dvh">
-          <LoadingSpinner />
-        </div>
-      )}
-      {!isPending && movieDetail && (
+      {movieDetail && (
         <div>
           <SummaryPanel movieDetail={movieDetail} />
           <div className=' bg-black'>
