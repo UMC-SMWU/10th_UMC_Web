@@ -2,13 +2,21 @@ import { validateSignin, type UserSigninInformation } from "../utils/validate";
 import useForm from "../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 import GoogleLogo from "../assets/GoogleLogo.png";
-import { postSignin } from "../apis/auth";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { LOCAL_STORAGE_KEY } from "../constants/key";
+// import { postSignin } from "../apis/auth";
+// import { useLocalStorage } from "../hooks/useLocalStorage";
+// import { LOCAL_STORAGE_KEY } from "../constants/key";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+  const { login, accessToken } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [navigate, accessToken]);
 
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
@@ -17,17 +25,8 @@ const LoginPage = () => {
     });
 
   const handleSubmit = async () => {
-    try {
-      const response = await postSignin(values);
-      setItem(response.data.accessToken);
-      navigate("/mypage");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("로그인 중 오류가 발생했습니다.");
-      }
-    }
+    // console.log("로그인 요청 값:", values); // 디버깅용: 로그인 요청 시 입력된 값 확인
+    await login(values);
   };
 
   const isDisabled =
