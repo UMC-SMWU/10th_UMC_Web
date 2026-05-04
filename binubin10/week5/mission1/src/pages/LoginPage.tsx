@@ -2,13 +2,12 @@ import { validateSignin, type UserSigninInformation } from '../utils/validate';
 import useForm from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 import GoogleLogo from '../assets/GoogleLogo.png';
-import { postSignin } from '../apis/auth';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { LOCAL_STORAGE_KEY } from '../constants/key';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
-  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+  const { login } = useAuth();
   const navigate = useNavigate();
+
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValue: { email: '', password: '' },
@@ -16,18 +15,11 @@ const LoginPage = () => {
     });
 
   const handleSubmit = async () => {
-    console.log(values);
     try {
-      const response = await postSignin(values);
-      setItem(response.data.accessToken);
-      console.log(response);
-    } catch (error: any) {
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        '로그인 중 오류가 발생했습니다.';
-      alert(errorMessage);
-      console.error('로그인 에러 상세:', error.response);
+      await login(values);
+      navigate('/my');
+    } catch {
+      alert('로그인 실패');
     }
   };
 
