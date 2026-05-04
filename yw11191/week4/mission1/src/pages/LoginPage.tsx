@@ -25,6 +25,10 @@ const LoginPage = () => {
         await login(values);
     };
 
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8000/v1/auth/google/login";
+    };
+
     const isDisabled:boolean = 
         Object.values(errors || {}).some(error => error.length > 0) ||
         Object.values(values).some(value => value === "");
@@ -89,7 +93,7 @@ const LoginPage = () => {
                 </div>
 
                 <button
-                    onClick={handleSubmit}
+                    onClick={handleGoogleLogin}
                     className='w-full flex items-center justify-center gap-2 bg-transparent text-[#8f8f93] border border-[#afafaf] py-3 rounded-md text-lg font-medium transition-colors cursor-pointer'
                 >
                     <img src={GoogleLogo} alt="Google Logo" className='w-6 h-6' />
