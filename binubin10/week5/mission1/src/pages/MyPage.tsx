@@ -1,33 +1,37 @@
 import { useEffect, useState } from 'react';
 import { getMyInfo } from '../apis/auth';
-
-// 데이터 모양 정의
-interface UserData {
-  name: string;
-  email: string;
-}
+import { useAuth } from '../context/AuthContext';
+import type { ResponseMyInfoDto } from '../types/auth';
 
 const MyPage = () => {
-  const [data, setData] = useState<UserData | null>(null);
+  const { logout } = useAuth();
+  const [data, setData] = useState<ResponseMyInfoDto['data'] | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await getMyInfo();
-        setData(response.data);
+        console.log('알맹이 데이터:', response.data);
+
+        if (response && response.data) {
+          setData(response.data);
+        }
       } catch (error) {
-        console.error(error);
+        console.error('데이터 가져오기 에러:', error);
       }
     };
     getData();
   }, []);
 
-  if (!data) {
-    return <div>로딩 중...</div>;
-  }
+  const handleLogout = async () => {
+    await logout();
+  };
 
-  console.log(data.name);
-  return <div>{data.name}</div>;
+  return (
+    <div>
+      <h1>{data?.name}님 환영합니다.</h1>
+    </div>
+  );
 };
 
 export default MyPage;

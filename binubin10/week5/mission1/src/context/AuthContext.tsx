@@ -46,19 +46,23 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const login = async (signinData: RequestSigninDto) => {
     try {
-      const { data } = await postSignin(signinData);
+      const response = await postSignin(signinData);
 
-      if (data) {
-        const newAccessToken = data.accessToken;
-        const newRefreshToken = data.refreshToken;
+      // CommonRespone 구조이므로 response.data 안에 토큰이 있습니다.
+      if (response && response.data) {
+        const { accessToken, refreshToken } = response.data;
 
-        setAccessTokenInStorage(newAccessToken);
-        setRefreshTokenInStorage(newRefreshToken);
+        setAccessTokenInStorage(accessToken);
+        setRefreshTokenInStorage(refreshToken);
 
-        setAccessToken(newAccessToken);
-        setRefreshToken(newRefreshToken);
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+
         alert('로그인 성공');
+
         window.location.href = '/my';
+      } else {
+        console.error('서버 응답에 데이터가 없습니다:', response);
       }
     } catch (error) {
       console.error('로그인 오류', error);
