@@ -37,6 +37,7 @@ export type ResponseMyInfoDto = CommonRespone<{
   name: string;
   email: string;
   bio: string | null;
+  avatar?: string;
   createdAt: Date;
   updateAt: Date;
 }>;

@@ -3,10 +3,17 @@ import useForm from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 import GoogleLogo from '../assets/GoogleLogo.png';
 import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, accessToken } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [navigate, accessToken]);
 
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
