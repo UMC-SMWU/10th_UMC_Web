@@ -1,48 +1,31 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import type { Movie, MovieResponse } from "../types/movie";
 import MovieCard from "../components/MovieCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { useParams } from "react-router-dom";
+import { useCustomFetch } from "../hooks/useCustomFetch"
 
 export default function MoviePage() {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  // 1. 로딩 상태
-  const [isPending, setIsPending] = useState(false);
-  const [iserror, setIsError] = useState(false);
   const [page, setPage] = useState(1);
 
   const {category} = useParams<{
     category: string;
   }>();
 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      setIsPending(true); // 데이터를 불러오는 상태 - 로딩 중
-      try {
-        //promise의 값 async -> resolve하는 과정 필요
-        const { data } = await axios.get<MovieResponse>(
-          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-              //'Content-Type': 'application/json;charset=utf-8' // <- application/json은 기본적으로 처리되어있음
-            },
-          },
-        );
-        setMovies(data.results);
-      } catch {
-        setIsError(true); // 에러 발생
-      } finally {
-        setIsPending(false); // 로딩 끝
-      }
-    };
-    fetchMovie();
-  }, [page, category]);
-  //console.log(movies);
+  const { data, isPending , isError } = useCustomFetch<MovieResponse>(
+    `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+      },
+    },
+    [page, category]
+  );
+
+  const movies: Movie[] = data?.results ?? [];
 
 
-  if (iserror) {
+  if (isError) {
     return (
       <div>
         <span className="text-red-500 text-2xl">에러가 발생했습니다.</span>
