@@ -33,6 +33,7 @@ export type ResponseSigninDto = CommonRespone<{
 //내 정보 조회
 
 export type ResponseMyInfoDto = CommonRespone<{
+    avatar: string;
     id:number;
     name: string;
     email: string;
