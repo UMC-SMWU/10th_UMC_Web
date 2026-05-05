@@ -7,9 +7,7 @@ interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 let refreshPromise: Promise<string> | null = null;
-
 export const axiosInstance = axios.create({
-    // baseURL: import.meta.env.VITE_SERVER_API_URL,
     baseURL: "http://localhost:8000",
 });
 
