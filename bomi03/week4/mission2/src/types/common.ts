@@ -8,11 +8,8 @@ export type CommonResponse<T> = {
 };
 
 export type CursorBasedResponse<T> = {
-  status: boolean;
-  statusCode: number;
-  message: string;
   data: T;
-  nextCursor: number;
+  nextCursor: number | null;
   hasNext: boolean;
 };
 

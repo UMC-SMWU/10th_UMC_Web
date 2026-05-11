@@ -11,21 +11,6 @@ export type Like = {
   lpId: number;
 };
 
-export type ResponseLpListDto = CursorBasedResponse<{
-  data: {
-    id: number;
-    title: string;
-    content: string;
-    thumbnail: string;
-    published: boolean;
-    authorId: number;
-    createdAt: string;
-    updatedAt: string;
-    tags: Tag[];
-    likes: Like[];
-  }[];
-}>;
-
 export type Lp = {
   id: number;
   title: string;
@@ -33,11 +18,13 @@ export type Lp = {
   thumbnail: string;
   published: boolean;
   authorId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   tags: Tag[];
   likes: Like[];
 };
+
+export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
 // 작성자 타입
 export type Author = {
