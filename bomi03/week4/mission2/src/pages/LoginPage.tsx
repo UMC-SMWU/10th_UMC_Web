@@ -2,21 +2,11 @@ import { validateSignin, type UserSigninInformation } from "../utils/validate";
 import useForm from "../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 import GoogleLogo from "../assets/GoogleLogo.png";
-// import { postSignin } from "../apis/auth";
-// import { useLocalStorage } from "../hooks/useLocalStorage";
-// import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { login, accessToken } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (accessToken) {
-      navigate("/");
-    }
-  }, [navigate, accessToken]);
 
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
@@ -25,8 +15,18 @@ const LoginPage = () => {
     });
 
   const handleSubmit = async () => {
-    // console.log("로그인 요청 값:", values); // 디버깅용: 로그인 요청 시 입력된 값 확인
     await login(values);
+
+    const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+    console.log("일반 로그인 후 redirect 경로:", redirectPath);
+
+    if (redirectPath) {
+      sessionStorage.removeItem("redirectAfterLogin");
+      navigate(redirectPath, { replace: true });
+      return;
+    }
+
+    navigate("/mypage", { replace: true });
   };
 
   const handleGoogleLogin = () => {
@@ -49,6 +49,7 @@ const LoginPage = () => {
         >
           &lt;
         </button>
+
         <h1 className="text-2xl font-bold">로그인</h1>
       </div>
 
@@ -81,6 +82,7 @@ const LoginPage = () => {
             type="email"
             placeholder="이메일을 입력해주세요!"
           />
+
           {errors?.email && touched?.email && (
             <div className="mt-1 text-red-500 text-sm">{errors.email}</div>
           )}
@@ -98,6 +100,7 @@ const LoginPage = () => {
             type="password"
             placeholder="비밀번호를 입력해주세요!"
           />
+
           {errors?.password && touched?.password && (
             <div className="mt-1 text-red-500 text-sm">{errors.password}</div>
           )}
