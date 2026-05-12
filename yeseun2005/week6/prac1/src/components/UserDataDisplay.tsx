@@ -21,13 +21,25 @@ export const WelcomeData = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div 
+    style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#0b1020',
+        color: 'white',
+        }}
+        >
       <div
         style={{
           marginBottom: '20px',
           display: 'flex',
           gap: '10px',
           flexWrap: 'wrap',
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
         }}
       >
         <button onClick={handleChangeUser}>다른 사용자 불러오기</button>
