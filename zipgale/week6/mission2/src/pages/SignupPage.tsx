@@ -44,7 +44,7 @@ const SignupPage = () => {
   const onSubmit:SubmitHandler<FormFields> = async (data) => {
     const {passwordCheck, ...rest} = data; // passwordCheck는 서버에 제외하고 보내기 - 역구조분해 할당
     const response = await postSignup(rest);
-    console.log(response);
+    //console.log(response);
   };
 
   return (
@@ -53,7 +53,7 @@ const SignupPage = () => {
         <input 
         {...register('email')}
         name='email'
-        className={`border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
+        className={`bg-gray-100 border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
         ${errors?.email ? 'border-red-500 bg-red-200' : 'border-gray-300'}`}
         type={'email'}
         placeholder={"이메일"} />
@@ -63,7 +63,7 @@ const SignupPage = () => {
       
         <input 
         {...register('password')}
-        className={`border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
+        className={`bg-gray-100 border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
         ${errors?.password ? 'border-red-500 bg-red-200' : 'border-gray-300'}`}
         type={'password'}
         placeholder={"비밀번호"}  />
@@ -73,7 +73,7 @@ const SignupPage = () => {
 
         <input 
         {...register('passwordCheck')}
-        className={`border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
+        className={`bg-gray-100 border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
         ${errors?.passwordCheck ? 'border-red-500 bg-red-200' : 'border-gray-300'}`}
         type={'password'}
         placeholder={"비밀번호 확인"}  />
@@ -83,7 +83,7 @@ const SignupPage = () => {
 
         <input 
         {...register('name')}
-        className={`border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
+        className={`bg-gray-100 border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
         ${errors?.password ? 'border-red-500 bg-red-200' : 'border-gray-300'}`}
         type={'name'}
         placeholder={"이름"}  />

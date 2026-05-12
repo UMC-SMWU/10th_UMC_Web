@@ -8,7 +8,7 @@ const MyPage = () => {
   useEffect(() => {
     const getData = async () => {
       const response = await getMyInfo();
-      console.log(response)
+      //console.log(response)
 
       setData(response);
     };
