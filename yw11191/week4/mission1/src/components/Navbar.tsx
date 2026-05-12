@@ -13,36 +13,30 @@ export const Navbar = () => {
         >
             SpinningSpinning Dolimpan
         </Link>
-        <div className="space-x-6">
-            {!accessToken && (
-                <>
-                <Link
-                    to={"/login"}
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
-                >
-                로그인
+        {!accessToken && (
+            <>
+            <div className="space-x-6">
+                <Link to={"/login"} className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
+                    로그인
                 </Link>
-                <Link
-                    to={"/signup"}
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
-                >
-                회원가입
+                <Link to={"/signup"} className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
+                    회원가입
                 </Link>
-                </>
-            )}
-        </div>
-        <div className="space-x-6">
-            {accessToken && (
-                <>
+            </div>
+            </>
+        )}
+        {accessToken && (
+            <>
+            <div className="space-x-6">
                 <Link to={"/mypage"} className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
                     마이페이지
                 </Link>
                 <Link to={"/search"} className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
                     검색
                 </Link>
-                </>   
-            )}
-        </div>
+                </div>
+            </>   
+        )}
     </div>
   </nav>
 }
