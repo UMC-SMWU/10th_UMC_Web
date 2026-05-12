@@ -6,7 +6,7 @@ interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
     _retry?: boolean;
 }
 
-const refreshPromise: Promise<string> | null=null;
+let refreshPromise: Promise<string> | null=null;
 
 export const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_SERVER_API_URL,
@@ -74,7 +74,7 @@ axiosInstance.interceptors.response.use(
                     setRefreshToken(data.data.refreshToken);
 
                     return data.data.accessToken;
-                })().catch((error) => {
+                })().catch((_error) => {
                     const { removeItem: removeAccessToken} = useLocalStorage(
                         LOCAL_STORAGE_KEY.accessToken,
                     );
