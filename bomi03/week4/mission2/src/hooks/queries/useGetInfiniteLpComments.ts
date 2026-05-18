@@ -8,10 +8,12 @@ function useGetInfiniteLpComments({
   lpId,
   limit,
   order,
+  enabled = true,
 }: {
   lpId: number;
   limit: number;
   order: PAGINATION_ORDER;
+  enabled?: boolean;
 }) {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.lpComments, lpId, order],

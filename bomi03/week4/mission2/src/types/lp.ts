@@ -1,4 +1,4 @@
-import type { CursorBasedResponse } from "./common";
+import type { CommonResponse, CursorBasedResponse } from "./common";
 
 export type Tag = {
   id: number;
@@ -26,7 +26,6 @@ export type Lp = {
 
 export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
-// 작성자 타입
 export type Author = {
   id: number;
   name: string;
@@ -37,7 +36,12 @@ export type Author = {
   updatedAt: string;
 };
 
-// 상세 조회용 LP 타입 (기존 Lp 확장)
 export type LpDetail = Lp & {
   author: Author;
 };
+
+export type ResponseLikeLpDto = CommonResponse<{
+  id: number;
+  userId: number;
+  lpId: number;
+}>;
