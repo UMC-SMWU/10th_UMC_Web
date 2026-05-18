@@ -32,16 +32,9 @@ const GoogleLoginRedirectPage = () => {
       setRefreshToken(refreshToken);
     }
 
-    const redirectPath = sessionStorage.getItem("redirectAfterLogin");
-    console.log("구글 로그인 후 redirect 경로:", redirectPath);
+    sessionStorage.removeItem("redirectAfterLogin");
 
-    if (redirectPath) {
-      sessionStorage.removeItem("redirectAfterLogin");
-      window.location.replace(redirectPath);
-      return;
-    }
-
-    window.location.replace("/mypage");
+    window.location.replace("/");
   }, [setAccessToken, setRefreshToken]);
 
   return <div>구글 로그인 리다이렉트 화면</div>;

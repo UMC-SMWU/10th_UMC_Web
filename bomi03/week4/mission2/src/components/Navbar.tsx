@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { getMyInfo } from "../apis/auth";
-import type { ResponseMyInfoDto } from "../types/auth";
+import { useAuth } from "../context/AuthContext";
+import useGetMyInfo from "../hooks/queries/useGetMyInfo";
+import useLogout from "../hooks/mutations/useLogout";
 
 type NavbarProps = {
   onClickMenu?: () => void;
@@ -10,27 +9,17 @@ type NavbarProps = {
 
 const Navbar = ({ onClickMenu }: NavbarProps) => {
   const { accessToken, logout } = useAuth();
-  const [data, setData] = useState<ResponseMyInfoDto | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getData = async () => {
-      if (!accessToken) {
-        setData(null);
-        return;
-      }
+  const { data } = useGetMyInfo(accessToken);
+  const logoutMutation = useLogout(logout);
 
-      const response = await getMyInfo();
-      setData(response);
-    };
-
-    getData();
-  }, [accessToken]);
-
-  const handleLogout = async () => {
-    await logout();
-    setData(null);
-    navigate("/");
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        navigate("/login");
+      },
+    });
   };
 
   const handleClickLogin = () => {
@@ -38,7 +27,7 @@ const Navbar = ({ onClickMenu }: NavbarProps) => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-md fixed w-full z-10">
+    <nav className="fixed z-10 w-full bg-white shadow-md dark:bg-gray-900">
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-4">
           <button
@@ -75,7 +64,7 @@ const Navbar = ({ onClickMenu }: NavbarProps) => {
         <div className="flex items-center gap-6">
           <Link
             to="/search"
-            className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+            className="text-gray-700 hover:text-blue-500 dark:text-gray-300"
           >
             검색
           </Link>
@@ -85,14 +74,14 @@ const Navbar = ({ onClickMenu }: NavbarProps) => {
               <Link
                 to="/login"
                 onClick={handleClickLogin}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                className="text-gray-700 hover:text-blue-500 dark:text-gray-300"
               >
                 로그인
               </Link>
 
               <Link
                 to="/signup"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                className="text-gray-700 hover:text-blue-500 dark:text-gray-300"
               >
                 회원가입
               </Link>
@@ -108,9 +97,10 @@ const Navbar = ({ onClickMenu }: NavbarProps) => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                disabled={logoutMutation.isPending}
+                className="text-gray-700 hover:text-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-300"
               >
-                로그아웃
+                {logoutMutation.isPending ? "로그아웃 중..." : "로그아웃"}
               </button>
             </>
           )}
