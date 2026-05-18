@@ -1,16 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-
+import Footer from "../components/Footer.tsx"
 const HomeLayout = () => {
     return (
         <div className='h-dvh flex flex-col'>
             <Navbar />
            
-            <main className='flex-1'>
+            <main className='flex-1 mt-10'>
                 <Outlet />
             </main>
-
-            <footer>© TMDB</footer>
+            <Footer />
         </div>
     )
 };

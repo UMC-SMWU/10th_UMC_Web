@@ -14,10 +14,12 @@ const Navbar = () => {
                     SpinningSpinning Dolimpan
                 </Link>
                 <div className="space-x-6">
-                    <Link
-                    to={"/login"}
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
-                    >
+                    {!accessToken && (
+                    <>
+                        <Link
+                        to={"/login"}
+                        className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                        >
                         로그인
                     </Link>
                     <Link
@@ -26,7 +28,24 @@ const Navbar = () => {
                     >
                         회원가입
                     </Link>
-                </div> 
+                    </>
+                    )}
+                    {accessToken && (
+                <Link 
+                to={"/my"}
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                >
+                    마이 페이지
+                </Link>
+                )} 
+                
+                <Link 
+                to={"/search"}
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                >
+                    검색
+                </Link>   
+                </div>
             </div>
         </nav>
     );
