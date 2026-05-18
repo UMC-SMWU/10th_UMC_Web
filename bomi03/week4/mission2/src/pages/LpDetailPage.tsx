@@ -467,7 +467,7 @@ const LpDetailPage = () => {
             type="button"
             onClick={handleClickLike}
             disabled={isLikePending}
-            className={`transition-transform hover:scale-110 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`transition-transform hover:scale-110 disabled:cursor-not-allowed ${
               isLiked ? "text-pink-400" : "text-gray-400"
             }`}
           >
