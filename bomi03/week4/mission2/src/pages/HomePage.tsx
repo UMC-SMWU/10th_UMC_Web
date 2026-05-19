@@ -1,32 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { PAGINATION_ORDER } from "../enums/common";
-import useGetLpList from "../hooks/queries/useGetLpList";
-import LpCard from "../components/LpCard";
+import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
+import LpCard from "../components/LpCard/LpCard";
+import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
 
-  const { data, isPending, isError, refetch } = useGetLpList({
-    cursor: 0,
+  const { ref, inView } = useInView();
+
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetInfiniteLpList({
+    limit: 20,
     search,
     order,
-    limit: 20,
   });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleToggleOrder = (selectedOrder: PAGINATION_ORDER) => {
     setOrder(selectedOrder);
   };
 
-  if (isPending) {
-    return <div className="mt-20 px-6">Loading...</div>;
-  }
-
   if (isError) {
     return (
-      <div className="mt-20 px-6">
-        <p>LP 목록을 불러오지 못했습니다.</p>
-        <button onClick={() => refetch()}>다시 시도</button>
+      <div className="px-6 py-8">
+        <p className="mb-3">LP 목록을 불러오지 못했습니다.</p>
+        <button
+          type="button"
+          onClick={() => refetch()}
+          className="rounded bg-pink-500 px-4 py-2 text-white hover:bg-pink-600"
+        >
+          다시 시도
+        </button>
       </div>
     );
   }
@@ -35,6 +54,7 @@ const HomePage = () => {
     <div className="px-6 py-8">
       <div className="mb-4 flex justify-end gap-2">
         <button
+          type="button"
           onClick={() => handleToggleOrder(PAGINATION_ORDER.asc)}
           className={`rounded px-3 py-1 text-sm ${
             order === PAGINATION_ORDER.asc
@@ -46,6 +66,7 @@ const HomePage = () => {
         </button>
 
         <button
+          type="button"
           onClick={() => handleToggleOrder(PAGINATION_ORDER.desc)}
           className={`rounded px-3 py-1 text-sm ${
             order === PAGINATION_ORDER.desc
@@ -61,14 +82,20 @@ const HomePage = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="검색어를 입력하세요"
-        className="mb-6 w-full rounded border px-3 py-2"
+        className="mb-6 w-full rounded border border-gray-500 bg-black px-3 py-2 text-white outline-none"
       />
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {data?.map((lp) => (
-          <LpCard key={lp.id} lp={lp} />
-        ))}
+        {isLoading && <LpCardSkeletonList count={20} />}
+
+        {data?.pages.map((page) =>
+          page.data.map((lp) => <LpCard key={lp.id} lp={lp} />),
+        )}
+
+        {isFetchingNextPage && <LpCardSkeletonList count={10} />}
       </div>
+
+      <div ref={ref} className="h-10" />
 
       <button
         onClick={() => alert("LP 생성 페이지는 이후 구현")}

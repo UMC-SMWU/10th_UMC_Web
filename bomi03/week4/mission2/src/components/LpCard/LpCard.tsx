@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { Lp } from "../types/lp";
+import type { Lp } from "../../types/lp";
 
 type LpCardProps = {
   lp: Lp;
@@ -21,9 +21,11 @@ const LpCard = ({ lp }: LpCardProps) => {
 
       <div className="absolute inset-0 flex flex-col justify-end bg-black/60 p-3 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <p className="line-clamp-2 text-sm font-semibold">{lp.title}</p>
+
         <p className="mt-1 text-xs text-gray-300">
           {new Date(lp.createdAt).toLocaleDateString()}
         </p>
+
         <p className="mt-1 text-xs">♥ {lp.likes.length}</p>
       </div>
     </div>
