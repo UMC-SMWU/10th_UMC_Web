@@ -1,22 +1,28 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Sidebar from "../components/Sidebar";
 
 const HomeLayout = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="h-dvh flex flex-col">
-      <nav className="bg-transparent text-black h-16 px-6 flex items-center border border-gray-400">
-        <div className="flex items-center gap-6 ml-auto">
-          <Link to="/login" className="hover:underline">
-            로그인
-          </Link>
-          <Link to="/signup" className="hover:underline">
-            회원가입
-          </Link>
-        </div>
-      </nav>
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <footer>푸터입니다.</footer>
+    <div className="min-h-screen flex flex-col bg-black text-white">
+      <Navbar onClickMenu={() => setIsSidebarOpen(true)} />
+
+      <div className="flex flex-1 pt-[80px] bg-black">
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+
+        <main className="flex-1 md:ml-52 bg-black">
+          <Outlet />
+        </main>
+      </div>
+
+      <Footer />
     </div>
   );
 };
