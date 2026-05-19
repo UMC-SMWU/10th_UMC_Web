@@ -6,7 +6,7 @@ const HomeLayout = () => {
   return (
     <div className='h-dvh flex flex-col'>
       <Navbar/>
-      <main className='flex-1 mt-10'>
+      <main className='flex-1 bg-black'>
         <Outlet/> {/* children을 표시 */}
       </main>
       <Footer/>

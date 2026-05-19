@@ -7,7 +7,7 @@ import type { ResponseLpListDto } from "../../types/lp";
 
 function useGetLpList({cursor, search, order, limit}:PaginationDto) {
   return useQuery({
-    queryKey: [QUERY_KEY.lps],
+    queryKey: [QUERY_KEY.lps, search, order],
     queryFn: () => getLpList({ // 외부에서 받아와야 할 떄 콜백으로?
       cursor,
       search,

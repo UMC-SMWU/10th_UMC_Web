@@ -45,7 +45,7 @@ const LoginPage = () => {
         <input 
         {...getInputProps('email')}
         name='email'
-        className={`border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
+        className={`border border-[#ccc] rounded-md bg-gray-100 w-[300px] p-[10px] focus:border-[#807bff] 
         ${errors?.email && touched?.email ? 'border-red-500 bg-red-200' : 'border-gray-300'}`}
         type={'email'}
         placeholder={"이메일"} />
@@ -54,7 +54,7 @@ const LoginPage = () => {
         )}
         <input 
         {...getInputProps('password')}
-        className={`border border-[#ccc] w-[300px] p-[10px] focus:border-[#807bff] 
+        className={`border border-[#ccc] rounded-md bg-gray-100 w-[300px] p-[10px] focus:border-[#807bff] 
         ${errors?.password && touched?.password ? 'border-red-500 bg-red-200' : 'border-gray-300'}`}
         type={'password'}
         placeholder={"비밀번호"}  />
@@ -68,13 +68,19 @@ const LoginPage = () => {
         className="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300" 
         >
           로그인</button>
+        
+        <div className="flex items-center justify-center gap-[13px] text-5 text-white">
+          <div className="flex-1 h-[1px] bg-[#d6d6d6]" />
+            <span>OR</span>
+          <div className="flex-1 h-[1px] bg-[#d6d6d6]" />
+        </div>
         <button 
         type='button'
         onClick={handleGoogleLogin} 
-        
         className="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300" 
         >
           <div className='flex items-center justify-center gap-4'>
+
             <span>구글 로그인</span>
           </div>
           </button>
