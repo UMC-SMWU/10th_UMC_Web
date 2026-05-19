@@ -22,7 +22,7 @@ export const postLike = async ({lpId}: RequestLpDto): Promise<ResponseLikeLpDto>
 }
 
 export const deleteLike = async ({lpId}: RequestLpDto): Promise<ResponseLikeLpDto> => {
-  const {data} = await axiosInstance.delete(`v1/lps/${lpId}/likes`);
+  const {data} = await axiosInstance.delete(`/v1/lps/${lpId}/likes`);
 
   return data;
 }
