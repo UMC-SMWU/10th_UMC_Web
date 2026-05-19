@@ -17,7 +17,7 @@ const intialLpListData: ResponseLpListDto = {
 
 function useGetLpList({cursor, search, order, limit}: PaginationDto) {
     return useQuery({
-        queryKey:[QUERY_KEY.lps,search],
+        queryKey:[QUERY_KEY.lps, search, order],
         queryFn: () =>
             getLpList({
                 cursor,

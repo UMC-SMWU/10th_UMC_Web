@@ -13,10 +13,9 @@ export type CursorBasedResponse<T> = {
     nextCursor: number;
     hasNext: boolean;
 };
-
-enum PAGINATION_ORDER {
-    "asc" = "asc",
-    "desc" = "desc",
+export enum PAGINATION_ORDER {
+    asc = "asc",
+    desc = "desc",
 }
 
 export type PaginationDto = {
