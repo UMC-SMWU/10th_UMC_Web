@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { LOCAL_STORAGE_KEY } from '../constants/key';
-import { set } from 'zod';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export const GoogleLoginRedirectPage = () => {

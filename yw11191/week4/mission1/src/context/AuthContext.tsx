@@ -4,23 +4,21 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import type { RequestSigninDto } from "../types/auth";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
-import { postLogout, postSignin } from "../apis/auth";
 
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
-  login: (signInData: RequestSigninDto) => Promise<void>;
-  logout: () => Promise<void>;
+  handleLoginSuccess: (accessToken: string, refreshToken: string) => void;
+  handleLogoutSuccess: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
   refreshToken: null,
-  login: async () => {},
-  logout: async () => {},
+  handleLoginSuccess: () => {},
+  handleLogoutSuccess: () => {},
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -41,46 +39,24 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [refreshToken, setRefreshToken] = useState<string | null>(
     getRefreshTokenFromStorage(), 
   );
-  const login = async (signinData: RequestSigninDto) => {
-    try {
-      const { data } = await postSignin(signinData);
 
-      if (data) {
-        const newAccessToken = data.accessToken;
-        const newRefreshToken = data.refreshToken;
-
-        setAccessTokenInStorage(newAccessToken);
-        setRefreshTokenInStorage(newRefreshToken);
-
-        setAccessToken(newAccessToken);
-        setRefreshToken(newRefreshToken);
-        alert("로그인 성공");
-        window.location.href = "/mypage";
-      }
-    } catch (error) {
-      console.error("로그인 오류", error);
-      alert("로그인 실패");
-    }
+  // useMutation 성공 시 토큰 상태를 동기화할 순수 컨텍스트 함수들
+  const handleLoginSuccess = (newAccessToken: string, newRefreshToken: string) => {
+    setAccessTokenInStorage(newAccessToken);
+    setRefreshTokenInStorage(newRefreshToken);
+    setAccessToken(newAccessToken);
+    setRefreshToken(newRefreshToken);
   };
 
-  const logout = async () => {
-    try {
-      await postLogout();
-      removeAccessTokenFromStorage();
-      removeRefreshTokenFromStorage();
-
-      setAccessToken(null);
-      setRefreshToken(null);
-
-      alert("로그아웃 성공");
-    } catch (error) {
-      console.error("로그아웃 오류", error);
-      alert("로그아웃 실패");
-    }
+  const handleLogoutSuccess = () => {
+    removeAccessTokenFromStorage();
+    removeRefreshTokenFromStorage();
+    setAccessToken(null);
+    setRefreshToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, refreshToken, login, logout }}>
+    <AuthContext.Provider value={{ accessToken, refreshToken, handleLoginSuccess, handleLogoutSuccess }}>
       {children}
     </AuthContext.Provider>
   );
