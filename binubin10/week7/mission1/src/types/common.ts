@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export type CommonRespone<T> = {
+export type CommonResponse<T> = {
   refreshToken: any;
   accessToken: any;
   result: import('./auth').ResponseSigninDto;
