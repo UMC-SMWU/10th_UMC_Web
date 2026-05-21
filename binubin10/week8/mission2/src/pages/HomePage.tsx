@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetLpList } from '../hooks/queries/useGetLpList';
 import useDebounce from '../hooks/useDebounce';
+import useThrottle from '../hooks/useThrottle';
 import { SEARCH_DEBOUNCE_DELAY } from '../constants/delay';
 
 const getRelativeTime = (dateString: string) => {
   if (!dateString) return '';
-
   const now = new Date();
   const past = new Date(dateString);
   const diffInMs = now.getTime() - past.getTime();
@@ -30,13 +30,43 @@ const HomePage = () => {
   const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
   const [sort, setSort] = useState<'desc' | 'asc'>('desc');
 
-  const { data, isLoading } = useGetLpList({
-    search: debouncedValue,
-    sort,
-    limit: 500,
-  });
+  const [rawScrollY, setRawScrollY] = useState(0);
+  const throttledScrollY = useThrottle(rawScrollY, 1000);
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetLpList({
+      search: debouncedValue,
+      sort,
+      limit: 10,
+    });
 
   const lpList = data?.pages.flatMap((page) => page.data.data) || [];
+
+  console.log('다음 페이지 있나?:', hasNextPage);
+  console.log('데이터 개수:', lpList.length);
+
+  const handleScroll = () => {
+    setRawScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+
+    const isBottom = throttledScrollY + clientHeight >= scrollHeight - 300;
+
+    if (isBottom && hasNextPage && !isFetchingNextPage) {
+      console.log(
+        '🎬 쓰로틀링 덕분에 1초에 최대 한 번만 실행됩니다! 다음 페이지 로딩 중...',
+      );
+      fetchNextPage();
+    }
+  }, [throttledScrollY, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="min-h-screen bg-[#121212] text-white p-6 flex flex-col items-center">
@@ -70,17 +100,15 @@ const HomePage = () => {
 
       <div className="w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
         {isLoading
-          ? // 로딩 중일 때 보여줄 스켈레톤
-            Array.from({ length: 12 }).map((_, i) => (
+          ? Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
                 className="aspect-square bg-gray-800 animate-pulse rounded-md"
               />
             ))
-          : // 로딩 완료 후 실제 리스트
-            lpList.map((lp) => (
+          : lpList.map((lp, index) => (
               <div
-                key={lp.id}
+                key={`${lp.id}-${index}`}
                 onClick={() => navigate(`/lp/${lp.id}`)}
                 className="relative aspect-square group cursor-pointer overflow-hidden bg-[#181818]"
               >

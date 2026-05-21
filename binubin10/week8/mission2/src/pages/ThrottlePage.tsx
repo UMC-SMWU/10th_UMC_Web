@@ -4,6 +4,8 @@ import useThrottle from '../hooks/useThrottle';
 const ThrottlePage = () => {
   const [scrollY, setScrollY] = useState<number>(0);
 
+  const throttledScrolly = useThrottle(scrollY, 1000);
+
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
