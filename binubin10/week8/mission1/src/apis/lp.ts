@@ -7,11 +7,13 @@ import type {
 } from '../types/lp.ts';
 import { axiosInstance } from './axios';
 
-export const getLpList = async (
-  paginationDto: PaginationDto,
-): Promise<ResponseLpListDto> => {
+export const getLpList = async (params: {
+  search?: string;
+  sort?: 'asc' | 'desc';
+  limit?: number;
+}) => {
   const { data } = await axiosInstance.get('/v1/lps', {
-    params: paginationDto,
+    params: params,
   });
 
   return data;

@@ -7,13 +7,16 @@ export const useLocalStorage = (key: string) => {
     }
   };
   const getItem = () => {
+    const value = localStorage.getItem(key);
+    if (!value) return null;
+
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
+      return JSON.parse(value);
     } catch (error) {
-      console.log(error);
+      return value;
     }
   };
+
   const removeItem = () => {
     try {
       window.localStorage.removeItem(key);
