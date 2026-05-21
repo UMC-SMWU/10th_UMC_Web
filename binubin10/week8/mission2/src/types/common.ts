@@ -1,0 +1,30 @@
+import type { ReactNode } from 'react';
+
+export type CommonResponse<T> = {
+  refreshToken: any;
+  accessToken: any;
+  result: import('./auth').ResponseSigninDto;
+  name: ReactNode;
+  status: boolean;
+  statusCode: number;
+  message: string;
+  data: T;
+};
+
+export type CursorBasedResponse<T> = {
+  status: boolean;
+  statusCode: number;
+  message: string;
+  data: T;
+  nextCursor: number;
+  hasNext: boolean;
+};
+
+export type PAGINATION_ORDER = 'asc' | 'desc';
+
+export type PaginationDto = {
+  cursor?: number;
+  limit?: number;
+  search?: string;
+  order?: PAGINATION_ORDER;
+};
