@@ -36,7 +36,7 @@ const HomePage = () => {
     limit: 500,
   });
 
-  const lpList = data?.data?.data || [];
+  const lpList = data?.pages.flatMap((page) => page.data.data) || [];
 
   return (
     <div className="min-h-screen bg-[#121212] text-white p-6 flex flex-col items-center">

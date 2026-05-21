@@ -9,9 +9,9 @@ export const useGetLpList = (params: {
     queryKey: ['lps', params.search, params.sort],
 
     queryFn: ({ pageParam = 1 }) =>
-      getLpList({ ...params, page: pageParam, limit: 10 }),
+      getLpList({ ...params, page: pageParam, limit: 500 }),
 
-    enabled: !!params.search.trim(),
+    // enabled: !!params.search.trim(),
 
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
