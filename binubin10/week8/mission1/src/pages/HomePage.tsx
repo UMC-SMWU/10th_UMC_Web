@@ -30,11 +30,10 @@ const HomePage = () => {
   const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
   const [sort, setSort] = useState<'desc' | 'asc'>('desc');
 
-  const { data, isLoading, isError, refetch } = useGetLpList({
-    search,
+  const { data, isLoading } = useGetLpList({
+    search: debouncedValue,
     sort,
     limit: 500,
-    debouncedValue,
   });
 
   const lpList = data?.data?.data || [];
