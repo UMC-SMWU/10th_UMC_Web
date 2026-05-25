@@ -48,7 +48,7 @@ function usePostLike() {
         const likedIndex = previousLpPost?.data.likes.findIndex((like) => like.userId === userId
       ) ?? -1;
     
-      if(likedIndex >= 0) // 내가 좋아요 눌럿
+      if(likedIndex >= 0)
         {
           previousLpPost?.data.likes.splice(likedIndex, 1);
         }else {

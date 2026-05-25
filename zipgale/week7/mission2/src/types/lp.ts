@@ -31,3 +31,9 @@ export type RequestLpDto = {
 export type ResponseLpDto = CommonResponse<Lp>;
 
 export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
+
+export type ResponseLikeLpDto = CommonResponse<{
+  lp: number;
+  userId: number;
+  lpId: number;
+}>
