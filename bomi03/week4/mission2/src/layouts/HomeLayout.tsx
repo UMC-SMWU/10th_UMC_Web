@@ -1,23 +1,20 @@
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
+import useSidebar from "../hooks/useSidebar";
 
 const HomeLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isOpen, open, close } = useSidebar();
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
-      <Navbar onClickMenu={() => setIsSidebarOpen(true)} />
+      <Navbar onClickMenu={open} />
 
       <div className="flex flex-1 pt-[80px] bg-black">
-        <Sidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-        />
+        <Sidebar isOpen={isOpen} onClose={close} />
 
-        <main className="flex-1 md:ml-52 bg-black">
+        <main className="flex-1 bg-black">
           <Outlet />
         </main>
       </div>
