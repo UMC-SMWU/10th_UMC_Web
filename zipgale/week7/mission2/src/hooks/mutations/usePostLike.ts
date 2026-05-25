@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postLike } from "../../apis/lp";
 import { queryClient } from "../../App";
 import { QUERY_KEY } from "../../constants/key";
-import type { Likes, RequestLpDto, ResponseLikeLpDto } from "../../types/lp";
+import type { Likes, RequestLpDto} from "../../types/lp";
 import type { ResponseMyInfoDto } from "../../types/auth";
 import type { ResponseLpDto } from "../../types/lp";
 function usePostLike() {
