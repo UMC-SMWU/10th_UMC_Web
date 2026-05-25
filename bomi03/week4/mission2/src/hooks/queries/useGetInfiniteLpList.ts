@@ -8,21 +8,28 @@ function useGetInfiniteLpList({
   limit,
   search,
   order,
+  enabled = true,
 }: {
   limit: number;
   search: string;
   order: PAGINATION_ORDER;
+  enabled?: boolean;
 }) {
+  const trimmedSearch = search.trim();
+
   return useInfiniteQuery({
+    queryKey: [QUERY_KEY.lps, trimmedSearch, order],
+
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getLpList({
         cursor: pageParam,
         limit,
-        search,
+        search: trimmedSearch,
         order,
       }),
-    queryKey: [QUERY_KEY.lps, search, order],
+
     initialPageParam: 0,
+
     getNextPageParam: (
       lastPage: ResponseLpListDto,
       allPages: ResponseLpListDto[],
@@ -30,6 +37,12 @@ function useGetInfiniteLpList({
       console.log(lastPage, allPages);
       return lastPage.hasNext ? lastPage.nextCursor : undefined;
     },
+
+    enabled,
+
+    staleTime: 1000 * 60,
+
+    gcTime: 1000 * 60 * 5,
   });
 }
 

@@ -7,16 +7,26 @@ import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 import CreateLpModal from "../components/LpModal/CreateLpModal";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import useDebounce from "../hooks/useDebounce";
+import { SEARCH_DEBOUNCE_DELAY } from "../constants/delay";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { accessToken } = useAuth();
 
   const [search, setSearch] = useState("");
+  const [isSearchTouched, setIsSearchTouched] = useState(false);
+  const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
+
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { ref, inView } = useInView();
+
+  const shouldFetchLpList =
+    !isSearchTouched || debouncedValue.trim().length > 0;
+
+  const shouldShowLpList = !isSearchTouched || debouncedValue.trim().length > 0;
 
   const {
     data,
@@ -28,15 +38,22 @@ const HomePage = () => {
     isFetchingNextPage,
   } = useGetInfiniteLpList({
     limit: 20,
-    search,
+    search: debouncedValue,
     order,
+    enabled: shouldFetchLpList,
   });
 
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
+    if (shouldFetchLpList && inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [
+    shouldFetchLpList,
+    inView,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  ]);
 
   const handleToggleOrder = (selectedOrder: PAGINATION_ORDER) => {
     setOrder(selectedOrder);
@@ -97,22 +114,33 @@ const HomePage = () => {
 
       <input
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setIsSearchTouched(true);
+        }}
         placeholder="검색어를 입력하세요"
         className="mb-6 w-full rounded border border-gray-500 bg-black px-3 py-2 text-white outline-none"
       />
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {isLoading && <LpCardSkeletonList count={20} />}
+      {isSearchTouched && debouncedValue.trim().length === 0 && (
+        <div className="py-10 text-center text-gray-400">
+          검색어를 입력해주세요.
+        </div>
+      )}
 
-        {data?.pages.map((page) =>
-          page.data.map((lp) => <LpCard key={lp.id} lp={lp} />),
-        )}
+      {shouldShowLpList && (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {isLoading && <LpCardSkeletonList count={20} />}
 
-        {isFetchingNextPage && <LpCardSkeletonList count={10} />}
-      </div>
+          {data?.pages.map((page) =>
+            page.data.map((lp) => <LpCard key={lp.id} lp={lp} />),
+          )}
 
-      <div ref={ref} className="h-10" />
+          {isFetchingNextPage && <LpCardSkeletonList count={10} />}
+        </div>
+      )}
+
+      {shouldShowLpList && <div ref={ref} className="h-10" />}
 
       <button
         type="button"
