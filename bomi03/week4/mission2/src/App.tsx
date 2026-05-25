@@ -16,6 +16,7 @@ import GoogleLoginRedirectPage from "./pages/GoogleLoginRedirectPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import LpDetailPage from "./pages/LpDetailPage";
+import ThrottlePage from "./pages/ThrottlePage";
 
 // publicRoutes: 인증 없이 접근 가능한 라우트
 const publicRoutes: RouteObject[] = [
@@ -32,6 +33,7 @@ const publicRoutes: RouteObject[] = [
         path: "lp/:lpid",
         element: <LpDetailPage />,
       },
+      { path: "/throttle", element: <ThrottlePage /> },
     ],
   },
 ];

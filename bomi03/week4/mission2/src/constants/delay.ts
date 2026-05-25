@@ -1,1 +1,2 @@
 export const SEARCH_DEBOUNCE_DELAY = 500;
+export const SCROLL_THROTTLE_DELAY = 3000;
