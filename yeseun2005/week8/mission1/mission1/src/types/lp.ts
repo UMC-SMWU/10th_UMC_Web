@@ -12,6 +12,7 @@ export type Likes = {
 };
 
 export type Lp = {
+    isLiked: any;
     id: number;
     title: string;
     content: string;

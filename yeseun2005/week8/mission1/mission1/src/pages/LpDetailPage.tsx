@@ -9,6 +9,7 @@ import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 import useGetLpDetail from "../hooks/queries/useGetLpDetail";
 import useUpdateLp from "../hooks/mutations/useUpdateLp";
 import useDeleteLp from "../hooks/mutations/useDeleteLp";
+import useToggleLpLike from "../hooks/mutations/useToggleLpLike";
 
 const CommentSkeleton = () => {
   return (
@@ -67,6 +68,30 @@ const LpDetailPage = () => {
 
   const { mutate: updateLpMutate, isPending: isUpdatingLp } = useUpdateLp();
   const { mutate: deleteLpMutate, isPending: isDeletingLp } = useDeleteLp();
+  const { mutate: toggleLike, isPending: isLikePending } = useToggleLpLike(
+  lpid ?? ""
+);
+
+const likes = lpDetail?.data?.likes ?? [];
+
+const isLiked = likes.some(
+  (like) => like.userId === myInfo?.data?.id 
+);
+
+const likeCount = likes.length;
+
+const handleToggleLike = () => {
+  if (!lpid) return;
+  if (!myInfo?.data?.id) {
+    alert("로그인 정보가 없습니다.");
+    return;
+  }
+
+  toggleLike({
+    isLiked,
+    userId: myInfo.data.id,
+  });
+};
 
   const comments = data?.pages.flatMap((page) => page.data.data) ?? [];
 
@@ -257,6 +282,14 @@ const LpDetailPage = () => {
         </div>
 
         <p className="mb-4 text-gray-700">{lpDetail?.data?.content}</p>
+        <button
+        type="button"
+        onClick={handleToggleLike}
+        disabled={isLikePending}
+        className="mb-4 rounded bg-pink-100 px-4 py-2 text-pink-600 disabled:bg-gray-100 disabled:text-gray-400"
+        >
+          {isLiked ? "❤️" : "🤍"} {likeCount}
+          </button>
 
         <div className="flex flex-wrap gap-2">
           {lpDetail?.data?.tags?.map((tag) => (
