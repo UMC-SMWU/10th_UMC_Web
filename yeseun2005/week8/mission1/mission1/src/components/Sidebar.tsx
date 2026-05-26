@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useDeleteUser from "../hooks/mutations/useDeleteUser";
 
-const Sidebar = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  close: () => void;
+}
+
+const Sidebar = ({ isOpen, close }: SidebarProps) => {
   const navigate = useNavigate();
-
-
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { mutate: deleteUserMutate, isPending } = useDeleteUser();
@@ -17,18 +19,37 @@ const Sidebar = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         navigate("/login");
-      }
+      },
     });
   };
 
   return (
     <>
-      <aside className="hidden min-h-[calc(100vh-80px)] w-52 flex-col gap-6 bg-black p-6 text-white md:flex">
-        <Link to="/search" className="hover:text-pink-400">
+      {isOpen && (
+        <div
+          onClick={close}
+          className="fixed inset-0 z-40 bg-black/50"
+        />
+      )}
+
+      <aside
+        className={`fixed left-0 top-0 z-50 flex h-screen w-64 flex-col gap-6 bg-black p-6 text-white transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={close}
+          className="mb-4 self-end text-2xl text-white"
+        >
+          ×
+        </button>
+
+        <Link to="/search" onClick={close} className="hover:text-pink-400">
           🔍 찾기
         </Link>
 
-        <Link to="/my" className="hover:text-pink-400">
+        <Link to="/my" onClick={close} className="hover:text-pink-400">
           👤 마이페이지
         </Link>
 
@@ -42,7 +63,7 @@ const Sidebar = () => {
       </aside>
 
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50">
           <div className="w-80 rounded-xl bg-white p-6 text-black shadow-lg">
             <h2 className="mb-4 text-xl font-bold">회원 탈퇴</h2>
 
