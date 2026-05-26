@@ -19,7 +19,7 @@ export const AddLpModal = ({ isOpen, onClose }: AddLpModalProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  // ✨ [복구 완료] 모달 종료 및 입력 상태값 초기화 함수
+  // 모달 종료 및 입력 상태값 초기화 함수
   const handleResetAndClose = () => {
     setTitle("");
     setContent("");
@@ -55,7 +55,32 @@ export const AddLpModal = ({ isOpen, onClose }: AddLpModalProps) => {
 
   // 4. LP 생성 useMutation 정의
   const createLpMutation = useMutation({
-    mutationFn: async (lpData: { title: string; content: string; thumbnail: string; tags: string[]; published: boolean }) => {
+    mutationFn: async (variables: { title: string; content: string; tags: string[]; published: boolean; file: File | null }) => {
+      let finalThumbnailUrl = "https://example.com/thumbnail.png";
+
+      if (variables.file) {
+        const formData = new FormData();
+        formData.append("file", variables.file); 
+
+        const uploadResponse = await axiosInstance.post("/v1/uploads", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log("업로드 응답:", uploadResponse.data);
+        if (uploadResponse.data?.data?.imageUrl) {
+          finalThumbnailUrl = uploadResponse.data.data.imageUrl;
+        }
+      }
+
+      const lpData = {
+        title: variables.title,
+        content: variables.content,
+        thumbnail: finalThumbnailUrl,
+        tags: variables.tags,
+        published: variables.published
+      };
+
       const response = await axiosInstance.post("/v1/lps", lpData);
       return response.data;
     },
