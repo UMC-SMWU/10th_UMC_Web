@@ -1,19 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetLpList from "../hooks/queries/useGetLpList";
 import { PAGINATION_ORDER } from "../types/common";
 import AddLpModal from "../components/AddLpModal";
+import useThrottle from "../hooks/useThrottle";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const [isAddLpModalOpen, setIsAddLpModalOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  const throttledScrollY = useThrottle(scrollY, 1000);
 
   const { data, isPending, isError, refetch } = useGetLpList({
     cursor: 0,
     order,
     limit: 20,
   });
+
+  useEffect(() => {
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
+
+  useEffect(() => {
+    console.log("throttled scrollY:", throttledScrollY);
+  }, [throttledScrollY]);
 
   const handleToggleOrder = () => {
     setOrder((prev) =>
@@ -24,7 +44,7 @@ const HomePage = () => {
   };
 
   if (isPending) {
-    return <div className="px-6 py-8">로딩 중...</div>;
+    return <div className="min-h-[200vh] px-6 py-8">로딩 중...</div>;
   }
 
   if (isError) {
