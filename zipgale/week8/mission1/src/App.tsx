@@ -12,6 +12,7 @@ import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools/production'
 import LpDetailPage from './pages/LpDetailPage'
+import ThrottlePage from './pages/ThrottlePage'
 
 // 1. 홈페이지
 // 2. 로그인 페이지
@@ -39,6 +40,7 @@ const publicRoutes:RouteObject[] = [
         element: <GoogleLoginRedirectPage />
       },
       {path: 'lps/:lpId',element:<LpDetailPage/>},
+      {path: '/throttle', element:<ThrottlePage/>}
     ] // children: 변화되는 요소
   }
 ];

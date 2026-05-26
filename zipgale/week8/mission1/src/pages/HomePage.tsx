@@ -42,7 +42,7 @@ const HomePage = () => {
 
   return (
     <div className='container mx-auto px-4'>
-      <input className="border-2 border-solid border-gray-100 text-white" value={search} onChange={(e) => setSearch(e.target.value)} />
+      <input className="border-2 border-solid border-gray-100 text-white my-4 mx-auto" placeholder='검색어를 입력하세요.' value={search} onChange={(e) => setSearch(e.target.value)} />
       <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4'>
         {isPending && <LpCardSkeletonList count = {20} />}
         {lps?.pages
