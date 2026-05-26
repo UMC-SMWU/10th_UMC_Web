@@ -18,6 +18,7 @@ const LoginPage = () => {
 
     const handleSubmit = async() => {
         await login(values);
+        navigate("/my");
     };
 
     const handleGoogleLogin = () => {
