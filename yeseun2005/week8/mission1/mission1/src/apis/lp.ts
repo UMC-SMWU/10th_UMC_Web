@@ -67,3 +67,21 @@ export const deleteLikeLp = async (lpId: number) => {
   const { data } = await axiosInstance.delete(`/lps/${lpId}/likes`);
   return data;
 };
+
+export const getSearchLps = async ({
+  search,
+  cursor,
+}: {
+  search: string;
+  cursor: number;
+}) => {
+  const response = await axiosInstance.get("/lps", {
+    params: {
+      search,
+      cursor,
+      limit: 10,
+    },
+  });
+
+  return response.data;
+};
