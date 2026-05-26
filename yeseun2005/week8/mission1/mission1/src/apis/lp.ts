@@ -31,3 +31,29 @@ export const postLp = async (body: PostLpRequest) => {
   const { data } = await axiosInstance.post("/lps", body);
   return data;
 };
+
+export type UpdateLpRequest = {
+  lpId: string;
+  title: string;
+  content: string;
+  thumbnail?: string;
+  tags: string[];
+  published: boolean;
+};
+
+export const updateLp = async ({
+  lpId,
+  ...body
+}: UpdateLpRequest) => {
+  const { data } = await axiosInstance.patch(
+    `/lps/${lpId}`,
+    body
+  );
+
+  return data;
+};
+
+export const deleteLp = async (lpId: string) => {
+  const { data } = await axiosInstance.delete(`/lps/${lpId}`);
+  return data;
+};

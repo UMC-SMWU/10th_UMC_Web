@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PAGINATION_ORDER } from "../types/common";
 import useGetInfiniteLpComments from "../hooks/queries/useGetInfiniteLpComments";
 import usePostLpComment from "../hooks/mutations/usePostLpComment";
 import useUpdateLpComment from "../hooks/mutations/useUpdateLpComment";
 import useDeleteLpComment from "../hooks/mutations/useDeleteLpComment";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
+import useGetLpDetail from "../hooks/queries/useGetLpDetail";
+import useUpdateLp from "../hooks/mutations/useUpdateLp";
+import useDeleteLp from "../hooks/mutations/useDeleteLp";
 
 const CommentSkeleton = () => {
   return (
@@ -19,6 +22,7 @@ const CommentSkeleton = () => {
 
 const LpDetailPage = () => {
   const { lpid } = useParams();
+  const navigate = useNavigate();
 
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const [comment, setComment] = useState("");
@@ -26,7 +30,16 @@ const LpDetailPage = () => {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState("");
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+
   const { data: myInfo } = useGetMyInfo();
+  const { data: lpDetail, isPending: isLpPending, isError: isLpError } =
+    useGetLpDetail(lpid);
 
   const {
     data,
@@ -52,6 +65,9 @@ const LpDetailPage = () => {
     order
   );
 
+  const { mutate: updateLpMutate, isPending: isUpdatingLp } = useUpdateLp();
+  const { mutate: deleteLpMutate, isPending: isDeletingLp } = useDeleteLp();
+
   const comments = data?.pages.flatMap((page) => page.data.data) ?? [];
 
   const handleToggleOrder = () => {
@@ -60,6 +76,74 @@ const LpDetailPage = () => {
         ? PAGINATION_ORDER.asc
         : PAGINATION_ORDER.desc
     );
+  };
+
+  const handleOpenEditModal = () => {
+    if (!lpDetail?.data) return;
+
+    setTitle(lpDetail.data.title);
+    setContent(lpDetail.data.content);
+    setThumbnail(lpDetail.data.thumbnail ?? "");
+    setTags(lpDetail.data.tags?.map((tag) => tag.name) ?? []);
+    setIsEditModalOpen(true);
+  };
+
+  const handleAddTag = () => {
+    const trimmedTag = tagInput.trim();
+
+    if (!trimmedTag) return;
+    if (tags.includes(trimmedTag)) return;
+
+    setTags((prev) => [...prev, trimmedTag]);
+    setTagInput("");
+  };
+
+  const handleDeleteTag = (targetTag: string) => {
+    setTags((prev) => prev.filter((tag) => tag !== targetTag));
+  };
+
+  const handleUpdateLp = () => {
+    if (!lpid) return;
+
+    if (!title.trim() || !content.trim()) {
+      alert("제목과 내용을 입력해주세요.");
+      return;
+    }
+
+    updateLpMutate(
+      {
+        lpId: lpid,
+        title,
+        content,
+        thumbnail,
+        tags,
+        published: true,
+      },
+      {
+        onSuccess: () => {
+          setIsEditModalOpen(false);
+          alert("LP가 수정되었습니다.");
+        },
+        onError: () => {
+          alert("LP 수정에 실패했습니다.");
+        },
+      }
+    );
+  };
+
+  const handleDeleteLp = () => {
+    if (!lpid) return;
+    if (!confirm("정말 LP를 삭제하시겠습니까?")) return;
+
+    deleteLpMutate(lpid, {
+      onSuccess: () => {
+        alert("LP가 삭제되었습니다.");
+        navigate("/");
+      },
+      onError: () => {
+        alert("LP 삭제에 실패했습니다.");
+      },
+    });
   };
 
   const handleSubmitComment = () => {
@@ -132,9 +216,61 @@ const LpDetailPage = () => {
     );
   };
 
+  if (isLpPending) {
+    return <div className="px-6 py-8">LP 정보를 불러오는 중...</div>;
+  }
+
+  if (isLpError) {
+    return <div className="px-6 py-8">LP 정보를 불러오지 못했습니다.</div>;
+  }
+
   return (
     <div className="px-6 py-8">
-      <section className="mt-10">
+      <section className="mx-auto max-w-3xl rounded-xl border p-6 shadow">
+        <img
+          src={lpDetail?.data?.thumbnail || "https://placehold.co/400x400"}
+          alt={lpDetail?.data?.title}
+          className="mx-auto mb-6 h-72 w-72 rounded-lg object-cover"
+        />
+
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">{lpDetail?.data?.title}</h1>
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleOpenEditModal}
+              className="rounded bg-gray-800 px-4 py-2 text-white"
+            >
+              수정
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDeleteLp}
+              disabled={isDeletingLp}
+              className="rounded bg-red-500 px-4 py-2 text-white disabled:bg-gray-300"
+            >
+              {isDeletingLp ? "삭제 중..." : "삭제"}
+            </button>
+          </div>
+        </div>
+
+        <p className="mb-4 text-gray-700">{lpDetail?.data?.content}</p>
+
+        <div className="flex flex-wrap gap-2">
+          {lpDetail?.data?.tags?.map((tag) => (
+            <span
+              key={tag.id}
+              className="rounded-full bg-gray-200 px-3 py-1 text-sm"
+            >
+              #{tag.name}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-10 max-w-3xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">댓글</h2>
 
@@ -219,10 +355,7 @@ const LpDetailPage = () => {
                               <button
                                 type="button"
                                 onClick={() =>
-                                  handleStartEdit(
-                                    comment.id,
-                                    comment.content
-                                  )
+                                  handleStartEdit(comment.id, comment.content)
                                 }
                                 className="block w-full px-3 py-2 text-left text-sm hover:bg-gray-100"
                               >
@@ -297,6 +430,97 @@ const LpDetailPage = () => {
           </button>
         )}
       </section>
+
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-[420px] rounded-xl bg-white p-6 text-black shadow-lg">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-bold">LP 수정</h2>
+
+              <button
+                type="button"
+                onClick={() => setIsEditModalOpen(false)}
+                className="text-xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="LP 제목"
+                className="rounded border px-3 py-2"
+              />
+
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="LP 내용"
+                className="h-24 resize-none rounded border px-3 py-2"
+              />
+
+              <input
+                value={thumbnail}
+                onChange={(e) => setThumbnail(e.target.value)}
+                placeholder="썸네일 URL"
+                className="rounded border px-3 py-2"
+              />
+
+              <div className="flex gap-2">
+                <input
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  placeholder="태그 입력"
+                  className="flex-1 rounded border px-3 py-2"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
+                />
+
+                <button
+                  type="button"
+                  onClick={handleAddTag}
+                  className="rounded bg-gray-800 px-4 py-2 text-white"
+                >
+                  추가
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-sm"
+                  >
+                    #{tag}
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTag(tag)}
+                      className="font-bold"
+                    >
+                      x
+                    </button>
+                  </span>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleUpdateLp}
+                disabled={isUpdatingLp}
+                className="mt-3 rounded bg-pink-500 px-4 py-2 text-white disabled:bg-gray-300"
+              >
+                {isUpdatingLp ? "수정 중..." : "수정 완료"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
