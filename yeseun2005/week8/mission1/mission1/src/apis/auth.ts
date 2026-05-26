@@ -24,4 +24,20 @@ export const getMyInfo = async (): Promise<ResponseMyInfoDto> => {
 export const postLogout = async () => {
     const {data} = await axiosInstance.post("/auth/signout");
     return data;
-}
+};
+
+export const deleteUser = async () => {
+  const { data } = await axiosInstance.delete("/users");
+  return data;
+};
+
+export type UpdateMyInfoRequest = {
+  name: string;
+  bio?: string;
+  avatar?: string;
+};
+
+export const updateMyInfo = async (body: UpdateMyInfoRequest) => {
+  const { data } = await axiosInstance.patch("/users", body);
+  return data;
+};

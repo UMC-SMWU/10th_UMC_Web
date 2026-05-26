@@ -18,3 +18,16 @@ export const getLpDetail = async (
     const { data } = await axiosInstance.get(`/lps/${lpId}`);
     return data;
 };
+
+export type PostLpRequest = {
+  title: string;
+  content: string;
+  thumbnail?: string;
+  tags: string[];
+  published: boolean;
+};
+
+export const postLp = async (body: PostLpRequest) => {
+  const { data } = await axiosInstance.post("/lps", body);
+  return data;
+};
