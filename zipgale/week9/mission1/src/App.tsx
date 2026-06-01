@@ -1,16 +1,15 @@
-import { useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import CartList from './components/CartList'
 import { Provider } from 'react-redux'
 import store from './store/store'
 import PriceBox from './components/PriceBox'
+import Modal from './components/Modal'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <Provider store={store}>
+      <Modal />
       <Navbar />
       <CartList />
       <PriceBox />
