@@ -1,1 +1,4 @@
 @import "tailwindcss";
+html {
+    @apply bg-neutral-900 min-h-dvh h-auto;
+}

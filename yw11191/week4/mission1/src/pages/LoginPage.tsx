@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import GoogleLogo from '../assets/GoogleLogo.png'; 
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { postSignin } from '../apis/auth';
 
 const LoginPage = () => {
-    const { login, accessToken } = useAuth();
+    const { handleLoginSuccess, accessToken } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,8 +23,27 @@ const LoginPage = () => {
         validate: validateSignin,
         });
 
+    // 로그인 useMutation으로 교체
+    const loginMutation = useMutation({
+        mutationFn: async (signinData: UserSigninInformation) => {
+            const response = await postSignin(signinData);
+            return response.data; // 백엔드 토큰 데이터 바디 반환
+        },
+        onSuccess: (data) => {
+            if (data) {
+                // 토큰 로컬스토리지 및 상태 세팅
+                handleLoginSuccess(data.accessToken, data.refreshToken);
+                alert("로그인 성공");
+                navigate("/"); // ✨ 요구사항: 홈 화면으로 리다이렉션
+            }
+        },
+        onError: (error) => {
+            console.error("로그인 오류", error);
+            alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
+        }
+    });
     const handleSubmit = async () => {
-        await login(values);
+        loginMutation.mutate(values);
     };
 
     const handleGoogleLogin = () => {
@@ -31,7 +52,8 @@ const LoginPage = () => {
 
     const isDisabled:boolean = 
         Object.values(errors || {}).some(error => error.length > 0) ||
-        Object.values(values).some(value => value === "");
+        Object.values(values).some(value => value === "") ||
+        loginMutation.isPending;
 
     return (
         <div className='flex flex-col items-center justify-center h-full gap-4 px-6'>
