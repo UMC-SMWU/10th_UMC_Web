@@ -31,13 +31,9 @@ const MyPage = () => {
     navigate('/');
   };
 
-  console.log('현재 상태(data):', data);
-
   return (
-    <div style={{ paddingTop: '20px' }}>
-      <h1 style={{ fontSize: '17px', color: 'black' }}>
-        {data?.name}님 환영합니다.
-      </h1>
+    <div>
+      <h1>{data?.name}님 환영합니다.</h1>
       <img
         src={data?.avatar || defaultAvatar}
         alt="프로필"
