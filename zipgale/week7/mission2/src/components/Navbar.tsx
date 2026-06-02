@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const { accessToken } = useAuth();
-
+  
   return (
     <nav className="bg-gray-900 shadow-md-fixed w-full z-10">
       <div className="flex items-center justify-between p-4">
