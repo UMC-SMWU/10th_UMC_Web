@@ -1,27 +1,28 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../redux/store';
-import {
-  clearCart,
-  calculateTotals,
-} from '../redux/slices/cartSlice';
-import CartItem from './CartItem';
+import { useDispatch, useSelector } from "react-redux";
+import CartItem from "./CartItem";
+import Modal from "./Modal";
+import type { AppDispatch, RootState } from "../app/store";
+import { openModal } from "../features/modal/modalSlice";
 
 const CartContainer = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { cartItems, amount, total } = useSelector(
-    (state: RootState) => state.cart
-  );
 
-  useEffect(() => {
-    dispatch(calculateTotals());
-  }, [cartItems, dispatch]);
+  const { cartItems } = useSelector((state: RootState) => state.cart);
+  const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+
+  const amount = cartItems.reduce((sum, item) => sum + item.amount, 0);
+  const total = cartItems.reduce(
+  (sum, item) => sum + Number(item.price) * item.amount,
+  0
+);
 
   if (cartItems.length === 0) {
     return (
       <main className="mx-auto max-w-5xl px-6 py-10">
         <h1 className="mb-6 text-3xl font-bold">장바구니</h1>
         <p className="text-gray-500">장바구니가 비어 있습니다.</p>
+
+        {isOpen && <Modal />}
       </main>
     );
   }
@@ -41,17 +42,18 @@ const CartContainer = () => {
         </div>
 
         <div className="mt-8 flex justify-center">
-            <button
-            onClick={() => dispatch(clearCart())}
+          <button
+            onClick={() => dispatch(openModal())}
             className="rounded-md border px-6 py-3 font-semibold hover:bg-gray-100"
-            >
-                전체 삭제
-            </button>
+          >
+            전체 삭제
+          </button>
         </div>
-    </section>
+      </section>
+
+      {isOpen && <Modal />}
     </main>
   );
 };
-
 
 export default CartContainer;

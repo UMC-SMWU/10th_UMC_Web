@@ -1,11 +1,7 @@
-import CartContainer from './components/CartContainer';
+import CartContainer from "./components/CartContainer";
 
 const App = () => {
-  return (
-    <div className="min-h-screen bg-gray-100">
-      <CartContainer />
-    </div>
-  );
+  return <CartContainer />;
 };
 
 export default App;

@@ -1,11 +1,8 @@
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../redux/store';
-import {
-  increase,
-  decrease,
-  removeItem,
-} from '../redux/slices/cartSlice';
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../app/store";
 import type { CartItemType } from '../constants/cartItems';
+import { removeItem, increase, decrease } from "../features/cart/cartSlice";
+
 
 type CartItemProps = {
   item: CartItemType;
@@ -13,7 +10,7 @@ type CartItemProps = {
 
 const CartItem = ({ item }: CartItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  
   return (
     <div className="flex items-center justify-between border-b py-6">
       <div className="flex items-center gap-4">
