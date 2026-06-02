@@ -21,14 +21,14 @@ const Modal = () => {
 
         <div className="flex justify-center gap-4">
           <button
-            onClick={closeModal}
+            onClick={handleCancel}
             className="rounded bg-gray-300 px-4 py-2"
           >
             아니요
           </button>
 
           <button
-            onClick={clearCart}
+            onClick={handleConfirm}
             className="rounded bg-red-500 px-4 py-2 text-white"
           >
             네

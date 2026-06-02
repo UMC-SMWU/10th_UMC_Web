@@ -1,15 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import Modal from "./Modal";
-import type { AppDispatch, RootState } from "../app/store";
-import { openModal } from "../features/modal/modalSlice";
 import { useCartStore } from "../store/useCartStore";
 
 const CartContainer = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { cartItems } = useCartStore();
-  const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+  const { cartItems, isOpen, openModal } = useCartStore();
 
   const amount = cartItems.reduce((sum, item) => sum + item.amount, 0);
   const total = cartItems.reduce(
@@ -44,7 +38,7 @@ const CartContainer = () => {
 
         <div className="mt-8 flex justify-center">
           <button
-            onClick={() => dispatch(openModal())}
+            onClick={openModal}
             className="rounded-md border px-6 py-3 font-semibold hover:bg-gray-100"
           >
             전체 삭제
