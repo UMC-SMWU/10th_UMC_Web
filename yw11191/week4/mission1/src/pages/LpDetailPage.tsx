@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useGetLpDetail from '../hooks/queries/UseGetLpDetail';
 import { Heart, MessageSquare } from 'lucide-react';
 import useGetMyInfo from '../hooks/queries/useGetMyInfo';
@@ -27,6 +27,7 @@ export const LpDetailPage = () => {
     const {lpId} = useParams();
     const {accessToken} = useAuth();
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     // Lp 수정 모드 상태 관리
     const [isEditing, setIsEditing] = useState(false);
@@ -67,7 +68,7 @@ export const LpDetailPage = () => {
       },
       onSuccess: () => {
         alert("요청이 성공했습니다. (LP 삭제 완료)");
-        Navigate("/"); // 삭제 후 홈 화면 리다이렉션
+        navigate("/"); // 삭제 후 홈 화면 리다이렉션
       },
       onError: (error) => {
         console.error("LP 삭제 실패", error);
