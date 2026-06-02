@@ -4,10 +4,17 @@ import { PAGINATION_ORDER } from "../enums/common";
 import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
 import LpCard from "../components/LpCard/LpCard";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
+import CreateLpModal from "../components/LpModal/CreateLpModal";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { accessToken } = useAuth();
+
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { ref, inView } = useInView();
 
@@ -33,6 +40,16 @@ const HomePage = () => {
 
   const handleToggleOrder = (selectedOrder: PAGINATION_ORDER) => {
     setOrder(selectedOrder);
+  };
+
+  const handleOpenCreateModal = () => {
+    if (!accessToken) {
+      alert("LP를 작성하려면 로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
+    setIsCreateModalOpen(true);
   };
 
   if (isError) {
@@ -98,11 +115,16 @@ const HomePage = () => {
       <div ref={ref} className="h-10" />
 
       <button
-        onClick={() => alert("LP 생성 페이지는 이후 구현")}
-        className="fixed bottom-8 right-8 flex h-14 w-14 items-center justify-center rounded-full bg-pink-500 text-3xl font-bold text-white shadow-lg"
+        type="button"
+        onClick={handleOpenCreateModal}
+        className="fixed bottom-8 right-8 flex h-14 w-14 items-center justify-center rounded-full bg-pink-500 text-3xl font-bold text-white shadow-lg hover:bg-pink-600"
       >
         +
       </button>
+
+      {isCreateModalOpen && (
+        <CreateLpModal onClose={() => setIsCreateModalOpen(false)} />
+      )}
     </div>
   );
 };

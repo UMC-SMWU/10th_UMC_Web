@@ -1,6 +1,6 @@
 import type { CommonResponse } from "./common";
 
-//회원 가입
+// 회원가입
 export type RequestSignupDto = {
   name: string;
   email: string;
@@ -14,11 +14,12 @@ export type ResponseSignupDto = CommonResponse<{
   name: string;
   email: string;
   bio: string | null;
+  avatar: string | null;
   createdAt: Date;
   updateAt: Date;
 }>;
 
-//로그인
+// 로그인
 export type RequestSigninDto = {
   email: string;
   password: string;
@@ -31,8 +32,7 @@ export type ResponseSigninDto = CommonResponse<{
   refreshToken: string;
 }>;
 
-//내 정보 조회
-
+// 내 정보 조회
 export type ResponseMyInfoDto = CommonResponse<{
   id: number;
   name: string;
@@ -41,4 +41,21 @@ export type ResponseMyInfoDto = CommonResponse<{
   avatar: string | null;
   createdAt: Date;
   updateAt: Date;
+}>;
+
+// 내 정보 수정
+export type RequestUpdateMyInfoDto = {
+  name: string;
+  bio?: string | null;
+  avatar?: string | null;
+};
+
+// 로그아웃
+export type ResponseLogoutDto = CommonResponse<{
+  message?: string;
+}>;
+
+// 회원 탈퇴
+export type ResponseDeleteUserDto = CommonResponse<{
+  message?: string;
 }>;
