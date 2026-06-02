@@ -3,11 +3,12 @@ import CartItem from "./CartItem";
 import Modal from "./Modal";
 import type { AppDispatch, RootState } from "../app/store";
 import { openModal } from "../features/modal/modalSlice";
+import { useCartStore } from "../store/useCartStore";
 
 const CartContainer = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { cartItems } = useSelector((state: RootState) => state.cart);
+  const { cartItems } = useCartStore();
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
 
   const amount = cartItems.reduce((sum, item) => sum + item.amount, 0);

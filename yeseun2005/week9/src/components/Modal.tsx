@@ -1,18 +1,15 @@
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../app/store";
-import { closeModal } from "../features/modal/modalSlice";
-import { clearCart } from "../features/cart/cartSlice";
+import { useCartStore } from "../store/useCartStore";
 
 const Modal = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { clearCart, closeModal } = useCartStore();
 
   const handleCancel = () => {
-    dispatch(closeModal());
+    closeModal();
   };
 
   const handleConfirm = () => {
-    dispatch(clearCart());
-    dispatch(closeModal());
+    clearCart();
+    closeModal();
   };
 
   return (
@@ -24,14 +21,14 @@ const Modal = () => {
 
         <div className="flex justify-center gap-4">
           <button
-            onClick={handleCancel}
+            onClick={closeModal}
             className="rounded bg-gray-300 px-4 py-2"
           >
             아니요
           </button>
 
           <button
-            onClick={handleConfirm}
+            onClick={clearCart}
             className="rounded bg-red-500 px-4 py-2 text-white"
           >
             네

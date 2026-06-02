@@ -1,16 +1,13 @@
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../app/store";
 import type { CartItemType } from '../constants/cartItems';
-import { removeItem, increase, decrease } from "../features/cart/cartSlice";
-
+import { useCartStore } from '../store/useCartStore';
 
 type CartItemProps = {
   item: CartItemType;
 };
 
 const CartItem = ({ item }: CartItemProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  
+  const { removeItem, increase, decrease } = useCartStore();
+
   return (
     <div className="flex items-center justify-between border-b py-6">
       <div className="flex items-center gap-4">
@@ -26,7 +23,7 @@ const CartItem = ({ item }: CartItemProps) => {
           <p className="mt-1 font-medium">{Number(item.price).toLocaleString()}원</p>
 
           <button
-            onClick={() => dispatch(removeItem(item.id))}
+            onClick= {() => removeItem(item.id)}
             className="mt-2 text-sm text-red-500"
           >
             삭제
@@ -36,7 +33,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
       <div className="flex items-center gap-3">
         <button
-          onClick={() => dispatch(decrease(item.id))}
+          onClick= {() => decrease(item.id)}
           className="rounded bg-gray-200 px-3 py-1"
         >
           -
@@ -45,7 +42,7 @@ const CartItem = ({ item }: CartItemProps) => {
         <span className="font-semibold">{item.amount}</span>
 
         <button
-          onClick={() => dispatch(increase(item.id))}
+          onClick= {() => increase(item.id)}
           className="rounded bg-gray-200 px-3 py-1"
         >
           +
