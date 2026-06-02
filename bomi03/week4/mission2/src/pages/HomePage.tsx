@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { PAGINATION_ORDER } from "../enums/common";
 import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
@@ -8,7 +8,11 @@ import CreateLpModal from "../components/LpModal/CreateLpModal";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../hooks/useDebounce";
-import { SEARCH_DEBOUNCE_DELAY } from "../constants/delay";
+import useThrottle from "../hooks/useThrottle";
+import {
+  SEARCH_DEBOUNCE_DELAY,
+  SCROLL_THROTTLE_DELAY,
+} from "../constants/delay";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -22,6 +26,8 @@ const HomePage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { ref, inView } = useInView();
+  const throttledInView = useThrottle(inView, SCROLL_THROTTLE_DELAY);
+  const lastFetchTimeRef = useRef<number>(0);
 
   const shouldFetchLpList =
     !isSearchTouched || debouncedValue.trim().length > 0;
@@ -44,12 +50,32 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    if (shouldFetchLpList && inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
+    if (
+      !shouldFetchLpList ||
+      !throttledInView ||
+      !hasNextPage ||
+      isFetchingNextPage
+    ) {
+      return;
     }
+
+    const now = Date.now();
+    const elapsedTime = now - lastFetchTimeRef.current;
+    const remainingTime =
+      lastFetchTimeRef.current === 0 || elapsedTime >= SCROLL_THROTTLE_DELAY
+        ? 0
+        : SCROLL_THROTTLE_DELAY - elapsedTime;
+
+    const timerId = setTimeout(() => {
+      lastFetchTimeRef.current = Date.now();
+      console.log("throttle 적용 후 다음 페이지 요청");
+      fetchNextPage();
+    }, remainingTime);
+
+    return () => clearTimeout(timerId);
   }, [
     shouldFetchLpList,
-    inView,
+    throttledInView,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
