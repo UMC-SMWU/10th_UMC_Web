@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useDeleteUser from "../hooks/mutations/useDeleteUser";
@@ -15,6 +15,33 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const deleteUserMutation = useDeleteUser();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
 
   const handleOpenDeleteModal = () => {
     setIsDeleteModalOpen(true);
@@ -38,44 +65,44 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
   return (
     <>
-      {/* 모바일에서 사이드바가 열렸을 때만 외부 어두운 영역 표시 */}
+      {/* 사이드바가 열렸을 때 외부 불투명 회색 배경 표시 */}
       {isOpen && (
-        <div
-          onClick={onClose}
-          className="fixed inset-0 z-20 bg-black/50 md:hidden"
-        />
+        <div onClick={onClose} className="fixed inset-0 z-20 bg-gray-600/60" />
       )}
 
       <aside
-        className={`fixed bottom-0 left-0 top-16 z-30 h-[calc(100vh-80px)] w-52 bg-white text-white transition-transform duration-300 dark:bg-gray-900
-        md:translate-x-0
+        className={`fixed bottom-0 left-0 top-0 z-30 w-80 bg-white text-gray-900 transition-transform duration-300 ease-in-out dark:bg-gray-900 dark:text-white
         ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <nav className="flex flex-col gap-6 px-8 py-8 text-lg font-semibold">
-          <Link
-            to="/search"
-            onClick={onClose}
-            className="flex items-center gap-3 text-gray-900 dark:text-white"
-          >
-            <span>🔍</span>
-            <span>찾기</span>
-          </Link>
+        <div className="px-10 py-10">
+          <h2 className="mb-12 text-2xl font-bold">돌려돌려 LP판</h2>
 
-          <Link
-            to="/mypage"
-            onClick={onClose}
-            className="flex items-center gap-3 text-gray-900 dark:text-white"
-          >
-            <span>👤</span>
-            <span>마이페이지</span>
-          </Link>
-        </nav>
+          <nav className="flex flex-col gap-7 text-lg font-semibold">
+            <Link
+              to="/search"
+              onClick={onClose}
+              className="flex items-center gap-4 text-gray-900 dark:text-white"
+            >
+              <span>🔍</span>
+              <span>찾기</span>
+            </Link>
+
+            <Link
+              to="/mypage"
+              onClick={onClose}
+              className="flex items-center gap-4 text-gray-900 dark:text-white"
+            >
+              <span>👤</span>
+              <span>마이페이지</span>
+            </Link>
+          </nav>
+        </div>
 
         {accessToken && (
           <button
             type="button"
             onClick={handleOpenDeleteModal}
-            className="absolute bottom-6 left-8 text-sm text-gray-400 hover:text-pink-400"
+            className="absolute bottom-8 left-10 text-sm text-gray-400 hover:text-pink-400"
           >
             탈퇴하기
           </button>
