@@ -119,8 +119,8 @@ h1 {
 .modal-box {
   position: relative;
   width: 540px;
-  max-height: 88vh;
-  background: #ffffff;
+  max-height: 85vh;
+  background: white;
   color: #111827;
   border-radius: 14px;
   overflow: hidden;
@@ -130,32 +130,32 @@ h1 {
 
 .modal-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 10;
-  width: 28px;
-  height: 28px;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  width: 36px;
+  height: 36px;
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.75);
   color: white;
+  font-size: 22px;
   cursor: pointer;
-  font-size: 18px;
 }
 
 .modal-hero {
-  height: 220px;
+  height: 230px;
   background-size: cover;
   background-position: center;
-  position: relative;
+  flex-shrink: 0;
 }
 
 .modal-hero-overlay {
   height: 100%;
-  padding: 130px 24px 20px;
+  padding: 120px 28px 24px;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0.88),
     rgba(0, 0, 0, 0.15)
   );
   color: white;
@@ -163,28 +163,28 @@ h1 {
 
 .modal-hero-overlay h2 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
+  line-height: 1.3;
   color: white;
 }
 
 .modal-hero-overlay p {
-  margin-top: 6px;
+  margin: 6px 0 0;
+  font-size: 14px;
   color: #e5e7eb;
-  font-size: 13px;
 }
 
 .modal-detail {
   display: flex;
-  gap: 22px;
+  gap: 24px;
   padding: 24px;
   overflow-y: auto;
-  flex: 1;
   min-height: 0;
 }
 
 .modal-detail img {
-  width: 160px;
-  height: 240px;
+  width: 170px;
+  height: 255px;
   object-fit: cover;
   border-radius: 10px;
   flex-shrink: 0;
@@ -192,8 +192,9 @@ h1 {
 
 .modal-info {
   flex: 1;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
+  padding-bottom: 20px;
 }
 
 .modal-info p {
@@ -203,23 +204,19 @@ h1 {
 .overview {
   max-height: 120px;
   overflow-y: auto;
-  padding-right: 6px;
+  padding-right: 8px;
 }
 
 .modal-buttons {
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-top: 10px;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .modal-buttons button {
-  padding: 9px 13px;
+  padding: 10px 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
