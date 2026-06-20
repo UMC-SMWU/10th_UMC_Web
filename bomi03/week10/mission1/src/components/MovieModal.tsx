@@ -1,5 +1,6 @@
 import { memo } from "react";
 import type { Movie } from "../types/movie";
+import { Link } from "react-router-dom";
 
 interface MovieModalProps {
   movie: Movie;
@@ -92,7 +93,14 @@ const MovieModal = memo(({ movie, onClose }: MovieModalProps) => {
               </div>
             </div>
 
-            <div className="mt-8 flex justify-center gap-3 md:justify-start">
+            <div className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
+              <Link
+                to={`/movies/${movie.id}`}
+                className="rounded-md bg-gray-900 px-5 py-3 font-semibold text-white hover:bg-black"
+              >
+                상세 페이지 이동
+              </Link>
+
               <button
                 type="button"
                 onClick={handleIMDbSearch}
